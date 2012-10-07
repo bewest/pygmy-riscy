@@ -1,0 +1,4243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>Riscy Pygness User Manual</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2010-11-10 Wed"/>
+<meta name="author" content="Frank Sergeant"/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color:lightblue; font-weight:normal }
+  .target { }
+  .timestamp { color: grey }
+  .timestamp-kwd { color: CadetBlue }
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*/-->
+</script>
+</head><body>
+<h1 class="title">Riscy Pygness User Manual</h1>
+
+
+
+
+
+
+
+
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Introduction </a></li>
+<li><a href="#sec-2">2 Installation </a>
+<ul>
+<li><a href="#sec-2.1">2.1 Choosing a computer for the host </a></li>
+<li><a href="#sec-2.2">2.2 Installing the system tools </a></li>
+<li><a href="#sec-2.3">2.3 Installing Riscy Pygness </a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 Getting started using an existing image </a></li>
+<li><a href="#sec-4">4 Source code </a>
+<ul>
+<li><a href="#sec-4.1">4.1 Install Emacs and forthblocks mode </a></li>
+<li><a href="#sec-4.2">4.2 Blocks </a></li>
+<li><a href="#sec-4.3">4.3 Text files </a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 Creating a new kernel image </a></li>
+<li><a href="#sec-6">6 Multitasking </a>
+<ul>
+<li><a href="#sec-6.1">6.1 Creating a task </a></li>
+<li><a href="#sec-6.2">6.2 Stopping and starting a task </a></li>
+</ul>
+</li>
+<li><a href="#sec-7">7 The Forth model </a>
+<ul>
+<li><a href="#sec-7.1">7.1 Brief description </a></li>
+<li><a href="#sec-7.2">7.2 Additional notes </a></li>
+<li><a href="#sec-7.3">7.3 Internals and Design </a></li>
+</ul>
+</li>
+<li><a href="#sec-8">8 Documentation for individual program files </a>
+<ul>
+<li><a href="#sec-8.1">8.1 makefile </a></li>
+<li><a href="#sec-8.2">8.2 riscy.tcl </a></li>
+<li><a href="#sec-8.3">8.3 riscy.asm </a></li>
+<li><a href="#sec-8.4">8.4 custom include files </a></li>
+</ul>
+</li>
+<li><a href="#sec-9">9 Support Software </a>
+<ul>
+<li><a href="#sec-9.1">9.1 Binutils (assembler, etc.) </a></li>
+<li><a href="#sec-9.2">9.2 Gdb or Insight </a></li>
+<li><a href="#sec-9.3">9.3 Tcl </a></li>
+<li><a href="#sec-9.4">9.4 Flash Utilities (downloaders) </a></li>
+<li><a href="#sec-9.5">9.5 Make </a></li>
+<li><a href="#sec-9.6">9.6 Terminal </a></li>
+</ul>
+</li>
+<li><a href="#sec-10">10 Limitations and cautions </a>
+<ul>
+<li><a href="#sec-10.1">10.1 Switching <b>back</b> to interactive mode with <code>;;</code> </a></li>
+<li><a href="#sec-10.2">10.2 Interactive strings </a></li>
+<li><a href="#sec-10.3">10.3 C, </a></li>
+<li><a href="#sec-10.4">10.4 Constants and LOAD </a></li>
+</ul>
+</li>
+<li><a href="#sec-11">11 Appendix </a>
+<ul>
+<li><a href="#sec-11.1">11.1 Linux and the command line </a></li>
+<li><a href="#sec-11.2">11.2 Putting Ubuntu on a USB stick </a></li>
+<li><a href="#sec-11.3">11.3 Board notes </a></li>
+<li><a href="#sec-11.4">11.4 Tools summary </a></li>
+<li><a href="#sec-11.5">11.5 FAQ </a></li>
+<li><a href="#sec-11.6">11.6 JTAG and OpenOCD </a></li>
+<li><a href="#sec-11.7">11.7 GDB </a></li>
+<li><a href="#sec-11.8">11.8 Emacs </a></li>
+<li><a href="#sec-11.9">11.9 Antecedents </a></li>
+<li><a href="#sec-11.10">11.10 colorForth </a></li>
+<li><a href="#sec-11.11">11.11 GNU Toolchain </a></li>
+<li><a href="#sec-11.12">11.12 Makefile automatic variables </a></li>
+<li><a href="#sec-11.13">11.13 Troubleshooting </a></li>
+<li><a href="#sec-11.14">11.14 Supported Processors </a></li>
+</ul>
+</li>
+<li><a href="#sec-12">12 Contact Information </a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1">1 Introduction </h2>
+<div id="text-1">
+
+
+<p>
+Riscy Pygness is a 32-bit multitasking Pygmy Forth for the ARM.  It
+includes full source code for both the <span style="text-decoration:underline;">host</span> (your desktop PC) and
+<span style="text-decoration:underline;">target</span> (your ARM development board).  The license is BSD/MIT-like so
+you can do (nearly) anything you like with it.
+</p>
+<p>
+It is aimed at relatively small embedded ARM systems rather than
+desktop ARM systems or large embedded ARM systems running an operating
+system (OS).  Riscy Pygness is a stand-alone system that is its own
+multitasking OS.  The current version needs about 4 KB of flash and
+1.5 KB RAM.  (The size can be reduced further depending on your
+needs.)  This makes it suitable for use in even the smaller ARM
+variants such as these NXP (formerly Philips) chips
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<col align="left"></col><col align="left"></col><col align="left"></col>
+<thead>
+<tr><th>variant</th><th>flash</th><th>RAM</th></tr>
+</thead>
+<tbody>
+<tr><td>LPC2101</td><td>8 KB</td><td>2 KB</td></tr>
+<tr><td>LPC2102</td><td>16 KB</td><td>4 KB</td></tr>
+<tr><td>LPC2103</td><td>32 KB</td><td>8 KB</td></tr>
+</tbody>
+</table>
+
+
+<p>
+It can address the full 4 GB address space, so it can take advantage
+of all the flash and RAM available in the larger variants.
+</p>
+<p>
+During development, the host communicates with the target via a serial
+port.  The host provides the smart terminal and the compiling
+services.  The host can generate a new, customized Forth image for the
+target.
+</p>
+<p>
+The Forth itself runs on the target but you interact with it by typing
+commands on the host, much as you would with a Forth running locally
+on the host.
+</p>
+<p>
+As you type each line of Forth words (commands) at the terminal, the
+line is compiled on the host then transmitted to the target either to
+be executed immediately (when "interpreting") or to extend the
+dictionary on the target (when "compiling").  (Yes, in either case, it
+is compiled on the host.)  Numbers typed at the terminal are sent to
+the target to be put on the target's data stack.  Word headers are
+kept on the host, not the target, and all compilation work is done on
+the host.
+</p>
+<p>
+The host and the target, by working together this way, provide the
+effect of a fully interactive Forth running on the target while
+conserving the limited resources of the target.
+</p>
+<p>
+The ideal way to run it is to use Linux or Unix.  This can be your
+main computer or a spare computer or even (via a live CD or a USB
+stick) a temporary computer.
+</p>
+<p>
+There is no particular reason you couldn't use a Microsoft OS, but I
+think you will find it easier to use Linux, at least to start with.
+If you don't already have a Linux computer, you can boot your computer
+temporarily to Linux using one of the Live CDs (either from an actual
+CD or from a USB stick), without disturbing your main computer or its
+hard drive.  Another alternative is to dedicate an old computer to
+this purpose.  <a href="#sec-2.1">*Choosing a computer for the host</a> describes several
+approaches.
+</p>
+<p>
+If you are new to computers, Linux, and the command line, it might
+make reading this manual easier to take a quick look at the <a href="#sec-11.1">Linux and the command line</a> section of the <a href="#sec-11">Appendix</a>.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2">2 Installation </h2>
+<div id="text-2">
+
+
+
+</div>
+
+<div id="outline-container-2.1" class="outline-3">
+<h3 id="sec-2.1">2.1 Choosing a computer for the host </h3>
+<div id="text-2.1">
+
+
+<p>
+If you already have an Intel (or AMD) i386 machine (i.e., an ordinary
+"PC") running a 32-bit version of Linux, you are all set.
+</p>
+<p>
+If not, and if you would rather not replace the OS on your main
+machine with a 32-bit Linux, then there are two main choices to
+consider:
+</p>
+
+</div>
+
+<div id="outline-container-2.1.1" class="outline-4">
+<h4 id="sec-2.1.1">2.1.1 Run Linux temporarily on your main computer </h4>
+<div id="text-2.1.1">
+
+
+<p>
+There are several ways to do this, such as
+</p>
+<ul>
+<li>
+boot a Linux live CD (such as the Ubuntu 10.04 LTS from
+<a href="http://www.ubuntu.com/desktop/get-ubuntu/download">http://www.ubuntu.com/desktop/get-ubuntu/download</a>).  Note, I
+recommend 10.04, since that is the version I used to compile the
+bundle of tools.  Still, other versions of Ubuntu, or other live
+CDs, might work fine.
+
+<p>
+You might tire of installing the bundle of tools everytime you
+boot, so I suggest putting the live CD onto a USB stick.  See
+<a href="#sec-11.2">Putting Ubuntu on a USB stick</a>.  That way your the changes you make
+will be persistent.
+</p>
+</li>
+<li>
+install Linux on an external disk drive (either a flash USB stick
+or an external USB disk drive).  Then, boot to this external drive
+whenever you wish to work with Riscy Pygness.
+
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-2.1.2" class="outline-4">
+<h4 id="sec-2.1.2">2.1.2 Run Linux on a spare computer </h4>
+<div id="text-2.1.2">
+
+
+<p>
+Install Linux on some other computer than your main workstation.
+Then
+</p>
+<ul>
+<li>
+sit at this other computer to work with Riscy Pygness, or 
+
+</li>
+<li>
+sit at your main workstation and connect to the other computer
+through your local network.  You could think of this other computer
+as an <span style="text-decoration:underline;">adaptor</span> that connects your ARM board to your main computer,
+even a main computer running a Microsoft OS.  You would make this
+connection with the <code>ssh</code> program (the modern equivalent of
+<code>telnet</code>) or with VNC.
+
+<p>
+Once Linux was installed, you wouldn't particularly need to leave a
+monitor or keyboard attached to the spare computer.
+</p>
+</li>
+</ul>
+
+<p>This spare computer can be almost any old junk computer you have lying
+around.  In a pinch, you could get by with 128M of RAM and a small
+hard drive and possibly run Linux without a GUI (without the X Window
+system).  It needs a serial port, but you could use a USB-to-serial
+cable. 
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2.2" class="outline-3">
+<h3 id="sec-2.2">2.2 Installing the system tools </h3>
+<div id="text-2.2">
+
+
+<p>
+To run Riscy Pygness, the computer needs to have certain tools
+installed, such as Tcl, an ARM cross assembler and linker, make, and a
+downloader (to program a binary image into the ARM CPU's flash
+memory).
+</p>
+<p>
+This step typically needs to be done just once.  
+</p>
+
+</div>
+
+<div id="outline-container-2.2.1" class="outline-4">
+<h4 id="sec-2.2.1">2.2.1 GNU toolchain for the ARM (and Tclkit) </h4>
+<div id="text-2.2.1">
+
+
+<p>
+The easy way is to download
+<a href="http://pygmy.utoh.org/riscy/arm-toolchain.tar.bz2">http://pygmy.utoh.org/riscy/arm-toolchain.tar.bz2</a> then uncompress it.
+</p>
+<pre class="example">
+$ wget http://pygmy.utoh.org/riscy/arm-toolchain.tar.bz2
+$ sudo tar -xjvf arm-toolchain.tar.bz2 --absolute-names --keep-old-files
+</pre>
+
+<p>
+The first line above downloads a bundle of tools and the second line
+uncompresses the bundle and places the tools where they should go.
+</p>
+<p>
+It installs the following
+</p><ul>
+<li>
+cross-compiling binutils to supply the ARM assembler, linker,
+etc.
+</li>
+<li>
+Tclkit to supply Tcl (the assembler pre-processor and the Riscy
+Pygness smart terminal/compiler are written in Tcl)
+</li>
+<li>
+lpc21isp (to download code to the ARM CPU's flash memory)
+</li>
+<li>
+GDB (the GNU debugger for the ARM) in case you wish to single-step
+through any assembly language code.
+
+</li>
+</ul>
+
+<p>Note, this bundle of tools is compiled for a 32-bit version of Linux
+running on Intel (AMD, etc.) hardware.
+</p>
+<p>
+The hard way would be to install and/or compile and install those
+tools yourself, one by one.  In which case, you still might wish to
+download the bundle of tools and then run the following command to see
+which files and needed and where they go:
+</p>
+<pre class="example">
+$ tar -tf arm-toolchain.tar.bz2
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2.2.2" class="outline-4">
+<h4 id="sec-2.2.2">2.2.2 Emacs and Make </h4>
+<div id="text-2.2.2">
+
+
+<p>
+You also need to have an editor (I recommend Emacs) and the Make
+program.  Maybe your version of Linux already has one or both of
+these.  You can find out if they are installed by running
+</p>
+<pre class="example">
+$ which emacs
+$ which make
+</pre>
+
+<p>
+If not installed, install them with the package manager that your
+version of Linux uses.  For example, if you are running Debian or
+Ubuntu, you could install them with
+</p>
+<pre class="example">
+$ sudo apt-get update
+$ sudo apt-get install emacs
+$ sudo apt-get install make
+</pre>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2.3" class="outline-3">
+<h3 id="sec-2.3">2.3 Installing Riscy Pygness </h3>
+<div id="text-2.3">
+
+
+<p>
+Download the current version named something like
+<code>riscypygness-20101113.tar.bz2</code> from <a href="http://pygmy.utoh.org/riscy/">http://pygmy.utoh.org/riscy/</a> then
+uncompress it.  Here is an example (but change the file name to use
+the current version shown on the web site):
+</p>
+<pre class="example">
+$ cd                     # move to your home directory
+$ wget http://pygmy.utoh.org/riscy/riscypygness-20101113.tar.bz2
+$ mkdir riscy            # create a directory for your Riscy Pygness work
+$ cd riscy               # change to that directory
+$ tar -xjvf ../riscypygness-20101113.tar.bz2  # uncompress the files
+</pre>
+
+<p>
+You will need to customize a few variables in <code>makefile</code> to tell it
+which ARM CPU variant you are using and which serial port is connected
+to the ARM board.  See <a href="#sec-8.1.2">*makefile variables</a>.
+</p>
+<p>
+One of the files is named <code>.emacs-example</code>.  If you do not already
+have a <code>.emacs</code> file in your home directory, you could use it to get
+you started:
+</p>
+<pre class="example">
+$ cp ~/riscy/.emacs-example ~/.emacs
+</pre>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3">3 Getting started using an existing image </h2>
+<div id="text-3">
+
+
+<p>
+The Riscy Pygness distribution comes with several pre-built,
+ready-to-run kernel images.  If you have an ARM board that matches one
+of these images, burn the <code>*.bin</code> file into the ARM's flash, then run
+with the matching <code>*.dictionary</code> file.
+</p>
+<p>
+For example, if you have the Olimex LPC-P2106 board
+(<a href="http://olimex.com/dev/lpc-p1.html">http://olimex.com/dev/lpc-p1.html</a>) (also available from Spark Fun
+<a href="http://www.sparkfun.com/commerce/product_info.php?products_id=269">http://www.sparkfun.com/commerce/product_info.php?products_id=269</a>),
+look for the files
+</p>
+<dl>
+<dt>kernel-lpc2106.bin</dt><dd>
+this is the binary image to be burned into
+the LPC2106's flash
+
+<p>
+Burn <code>kernel-lpc2106.bin</code> into the LPC2106.  You can use whatever
+method you are already familiar with, or you can use the program
+<code>lpc21isp</code>.  See the <a href="#sec-9.4">Flash utilities section</a> for examples.
+</p>
+<p>
+This step needs to be done just once (unless/until you generate a
+new kernel).
+</p>
+</dd>
+<dt>kernel-lpc2106.dictionary</dt><dd>
+this is the matching dictionary file 
+
+<p>
+Run Riscy Pygness via the <code>riscy.tcl</code> program, passing it the name of
+the dictionary file and, optionally, the name of your serial port.
+</p>
+<pre class="example">
+$ ./riscy.tcl -image kernel-lpc2106  -port /dev/ttyS0
+</pre>
+
+<p>
+Of course, substitute the correct serial port name if you are not
+using <code>/dev/ttyS0</code>. 
+</p>
+<p>
+This is a fairly long command line to type.  You might prefer to
+set up a shell script or shell alias to give you a much shorter
+command to type.  I use a script named <code>r</code> which is short for "run"
+to type the command for me &ndash; the distribution includes this
+example script.  So, I start Riscy Pygness interactively by typing
+</p>
+<pre class="example">
+$ ./r
+</pre>
+
+<p>
+(be sure to edit it for your environment before using it).  Or,
+create a shell alias with a command such as
+</p>
+<pre class="example">
+$ alias r='./riscy.tcl -image kernel-lpc2106 -port /dev/ttyS0'
+</pre>
+
+<p>
+and put it in your <code>~/.bashrc</code> file.  Then, you can start Riscy
+Pygness by typing
+</p>
+<pre class="example">
+$ r
+</pre>
+
+</dd>
+</dl>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4">4 Source code </h2>
+<div id="text-4">
+
+
+</div>
+
+<div id="outline-container-4.1" class="outline-3">
+<h3 id="sec-4.1">4.1 Install Emacs and forthblocks mode </h3>
+<div id="text-4.1">
+
+
+<p>
+Of course, you can edit your source code files with any text editor.
+If you have a favorite, perhaps you are a <code>vi</code> enthusiast, feel free to
+continue to use it.  Otherwise you can install Emacs with
+</p>
+<p>
+<code># apt-get install emacs</code>
+</p>
+<p>
+There are some advantages to using the Emacs editor, along with the
+<code>forthblocks.el</code> extension (included in Riscy Pygness).  Forthblocks
+mode allows you to work with plain text Forth code as if (almost as
+if) you were working with block files.  These are very flexible blocks
+in that they can be as large or small as you like.  See the <a href="#sec-11.8">Emacs</a>
+section.  The beginning of the file <code>forthblocks.el</code> contains details
+as to how to use and install it.
+</p>
+<p>
+Even if you are a <code>vi</code> enthusiast, you might like to use Emacs to edit
+Forth source code, perhaps by installing the Emacs viper package so
+you can use your familiar <code>vi</code> keystrokes.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4.2" class="outline-3">
+<h3 id="sec-4.2">4.2 Blocks </h3>
+<div id="text-4.2">
+
+
+
+</div>
+
+<div id="outline-container-4.2.1" class="outline-4">
+<h4 id="sec-4.2.1">4.2.1 blocks for source code </h4>
+<div id="text-4.2.1">
+
+
+<p>
+Traditionally, Forth code was kept in "screens" or "blocks".  Each was
+a fixed size of 1024 bytes (characters), presented to the user in an
+editor that showed 16 lines of 64 characters.
+</p>
+<p>
+This size is <b>very</b> convenient for source code and encourages modularity
+and short definitions.
+</p>
+<p>
+In Riscy Pygness, we fake true 1024-byte blocks by using a text file
+divided into logical blocks by special comment lines.
+</p>
+<p>
+Each "block" starts with a special Forth comment in the first line.
+The left parenthesis must be in the first column, followed by a space
+and either the word "block" or the word "shadow", followed by a space
+and a decimal number (the block number).  Additional text may follow,
+but the comment must end eventually with a right parenthesis.
+</p>
+<p>
+When we <code>LOAD</code> a block, the host program searches for that marker to
+know where to extract the text to be interpreted.
+</p>
+<p>
+The procedure <code>filenameFromBlockNumber</code> (near the top of <code>riscy.tcl</code>)
+maps block number ranges to file names.  Edit it if you wish to add
+additional block files or to change the ranges.
+</p>
+<p>
+Block numbers should be in numerical order, else searching might fail.
+However, "holes" (missing block numbers) are ok.
+</p>
+<p>
+<code>riscy.tcl</code> reads the entire file into the host's memory, but only when
+the file changes.
+</p>
+<p>
+Here are some examples of special comment lines that would mark the
+beginning of a block.
+</p>
+<pre class="example">
+( block 0  )
+( block 1   ------------------  load block)
+( block 2  miscellaneous)
+( shadow 2 )
+( block 3  )
+</pre>
+
+<p>
+When you type a Forth command such as <code>22 LOAD</code>, the procedure
+<code>filenameFromBlockNumber</code> finds that block 22 belongs to the file
+named <code>kernel.fth</code>.  If this is the current file, then <code>riscy.tcl</code> has
+already read it into memory (on the host), otherwise it becomes the
+current file and is read into memory.  Then, using the block comment
+lines, <code>riscy.tcl</code> finds the range of lines to load.
+</p>
+<p>
+Using the forthblocks mode in <a href="#sec-11.8">Emacs</a>, a single block is displayed at a
+time.  <code>PgDn</code> (or <code>C-v</code>) moves to the following block.  <code>PgUp</code> (or <code>M-v</code>)
+moves to the previous block.  <code>M-a</code> ("a" for "alternate") toggles
+between a block and its corresponding shadow block.  Traditionally,
+Forth code with short comments goes on the "block" and lengthier
+comments go on the "shadow".
+</p>
+<p>
+What I usually do when I start a new Forth file is to write one
+comment line for a block and another for a shadow, e.g.,
+</p>
+<pre class="example">
+( block 0 )
+( shadow 0 )
+</pre>
+
+<p>
+Then copy and paste the two a bunch of times, producing something like
+</p>
+<pre class="example">
+( block 0 )
+( shadow 0 )
+( block 0 )
+( shadow 0 )
+( block 0 )
+( shadow 0 )
+( block 0 )
+( shadow 0 )
+</pre>
+
+<p>
+Then run the Emacs forthblocks mode command <code>M-x renumber-blocks</code> to fix
+up the numbers automatically, producing
+</p>
+<pre class="example">
+( block 0 )
+( shadow 0 )
+( block 1 )
+( shadow 1 )
+( block 2 )
+( shadow 2 )
+( block 3 )
+( shadow 3 )
+</pre>
+
+<p>
+See the file <code>forthblocks.el</code> for more details on how to set it up and
+use it.
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-4.2.2" class="outline-4">
+<h4 id="sec-4.2.2">4.2.2 blocks for data </h4>
+<div id="text-4.2.2">
+
+
+<p>
+Another traditional use of 1024-byte blocks is for data storage.  This
+use is not particularly addressed by the text-file-based block system
+described in the previous subsection.  Nothing precludes the
+possibility of using certain block ranges for text-file-based blocks
+for source code storage while using different block ranges for pure
+1024-byte data blocks (located perhaps in RAM, flash, or SD cards).
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4.3" class="outline-3">
+<h3 id="sec-4.3">4.3 Text files </h3>
+<div id="text-4.3">
+
+
+<p>
+Some people apparently <b>really</b> dislike using blocks for source code.
+If you are one of those people, you could try the hybrid approach
+discussed above (where you use plain text files for source except that
+special comments mark the logical blocks) to see if you grow to like
+it.
+</p>
+<p>
+Otherwise, for the source for your application, use a plain text file
+but start it with a single comment such as
+</p>
+<pre class="example">
+( block 2000 -- this entire file file is block 2000 )
+</pre>
+
+<p>
+then forget about blocks.  The entire text file will be in that single
+block.  Then
+</p>
+<pre class="example">
+2000 LOAD
+</pre>
+
+<p>
+will load the entire text file.
+</p>
+<p>
+Note, do not do this with the file <code>kernel.fth</code> as that is used to
+generate the kernel.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5">5 Creating a new kernel image </h2>
+<div id="text-5">
+
+
+<p>
+Why would you wish to create a new kernel?  There are serveral
+reasons:
+</p>
+<ul>
+<li>
+perhaps a pre-built kernel is not available for your ARM board
+
+</li>
+<li>
+you wish to add, delete, or modify some of the Forth primitives
+
+</li>
+<li>
+you wish to move more of your application into the kernel (and thus
+into flash memory)
+
+</li>
+</ul>
+
+<p>The usual procedure is to edit <code>riscy.asm</code> (to change any primitives)
+and/or to edit <code>kernel.fth</code> (to change any high-level that will be
+part of the kernel), then to use the makefile to generate the new
+kernel image binary file (to be burned into flash) and the matching
+dictionary file.
+</p>
+<p>
+Be sure to look through <code>makefile</code> and edit any settings that need to be
+changed for your environment (such as the serial port name or the CPU
+clock speed), then run
+</p>
+<p>
+<code>$ make</code>
+</p>
+<p>
+Which will do any pre-processing and assembly steps and then run
+<code>riscy.tcl</code> to create the new binary and dictionary files for all the
+supported boards.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6">6 Multitasking </h2>
+<div id="text-6">
+
+
+<p>
+Each task has a TCB (Task Control Block) in RAM.  Each task also has
+its own data stack area and return stack area.  The task's stacks
+would not necessarily need to be adjacent to the task's TCB, but that
+is where we place them.  The address of the task is the start of its
+TCB.  That is, the task <b>is</b> its TCB or the TCB is the task.
+</p>
+<p>
+The <code>UP</code> register (we use R7 for this) holds the address of the current
+task (i.e., the address of the current task's TCB).  <code>UP</code> stands for
+"User Pointer".  It points to task-specific values &ndash; values local to
+the task.
+</p>
+<p>
+The TCB has 3 named slots plus 5 unnamed slots.  Each slot is 32-bits
+wide, thus the TCB takes 32 bytes.  Traditionally, the TCB would have
+even more named slots.  Feel free to add them if your application
+needs them, but these should do for most applications.
+</p>
+<ul>
+<li>
+the 3 named slots are
+
+<dl>
+<dt><code>LINK</code></dt><dd>
+this slot holds the address of the next task (the task that
+will get control when the current task pauses).
+
+</dd>
+<dt><code>SP0</code></dt><dd>
+this slot holds the starting address (the high address,
+because the stack grows toward lower memory) of the data stack.
+It is used by the word <code>SP!</code> to reinitialize the task's data stack
+pointer.
+
+</dd>
+<dt><code>RP0</code></dt><dd>
+this slot holds the starting address (the high address,
+because the stack grows toward lower memory) of the return stack.
+It is used by the word <code>RP!</code> to reinitialize the task's return
+stack pointer.
+
+</dd>
+</dl>
+</li>
+<li>
+The 5 unnamed slots form a save area for storing a task's state
+when it is not running.  These slots save the five registers
+
+<dl>
+<dt>tos   </dt><dd>
+the cached top of stack value (register R0 or TOS)
+</dd>
+<dt>ip    </dt><dd>
+the instruction pointer register (register R9 or IPTR)
+</dd>
+<dt>dstk  </dt><dd>
+the current data stack pointer (register R10)
+</dd>
+<dt>rstk  </dt><dd>
+the current return stack pointer (register R11)
+</dd>
+<dt>rloop </dt><dd>
+the current loop counter (register R12)
+
+</dd>
+</dl>
+</li>
+</ul>
+
+<p>Traditionally, <code>PAUSE</code> would first store all the state onto the data
+stack and thus need just one slot to store the data stack pointer.
+However, to speed up <code>PAUSE</code>, we take advantage of the ARM's store
+multiple and load multiple instructions, at the cost of several extra
+slots in each TCB.
+</p>
+<p>
+There is always at least one task.  This is the "foreground" task.  It
+and its TCB are configured automatically.  The word <code>PAUSE</code> pauses the
+current task and turns control over to the next task.  Each task, in
+its TCB, has a <code>LINK</code> slot that holds the address of the next task to
+run.  When there is only one task, that task's <code>LINK</code> slot points to
+itself.  Thus, when <code>PAUSE</code> executes, it saves the state of the
+foreground task, then immediately restores the state of the foreground
+task, and thus continues running the foreground task.  That is, with
+only one task, <code>PAUSE</code> jumps back to the foreground task.
+</p>
+<p>
+If you really don't plan to use more than a single task in your
+application, you could consider changing <code>PAUSE</code> to a no-op, as it
+doesn't really shine until more than one tasks are present.
+</p>
+<p>
+Here is what the TCB looks like, with the offset relative to the start
+of the TCB (and thus relative to the value in <code>UP</code>):
+</p>
+
+
+
+<pre class="example">
+   +    0   LINK   holds the address of the next task to execute
+   +    4          holds saved TOS
+   +    8          holds saved IP
+   + 0x0C          holds saved DSTK
+   + 0x10          holds saved RSTK
+   + 0x14          holds saved RLOOP
+   + 0x18   SP0    holds address of start of data stack
+   + 0x1C   RP0    holds address of start of return stack
+  often the data stack will start here (at offset 0x20)
+  with the return stack starting just above the data stack
+</pre>
+
+
+
+
+
+</div>
+
+<div id="outline-container-6.1" class="outline-3">
+<h3 id="sec-6.1">6.1 Creating a task </h3>
+<div id="text-6.1">
+
+
+<p>
+There is normally no need to create tasks, as three are created for
+you automatically.
+</p>
+<ul>
+<li>
+<code>FOREGROUND</code> (also known as <code>TERMINAL</code>)
+</li>
+<li>
+<code>TASK1</code>
+</li>
+<li>
+<code>TASK2</code>
+
+</li>
+</ul>
+
+<p>See <code>riscy.asm</code> if you wish to create more or fewer.
+</p>
+<p>
+Until/unless you initialize and wake <code>TASK1</code> and <code>TASK2</code>, only the
+<code>FOREGROUND</code> task runs.
+</p>
+<p>
+Suppose we want <code>TASK1</code> to run a Forth word that increments a
+variable named <code>TICKS</code> every 1.5 seconds.
+</p>
+<pre class="example">
+ VARIABLE TICKS
+ : TICKER ( -)  0 TICKS !   BEGIN  1500 MS  1 TICKS +!  AGAIN  ;
+ ' TICKER  TASK1  TASK!  
+ TASK1 WAKE
+</pre>
+
+
+<p>
+Let's take those lines one at a time:
+</p>
+<pre class="example">
+VARIABLE TICKS
+</pre>
+this creates the variable (in RAM of course) that will be incremented
+
+<pre class="example">
+: TICKER ... ;
+</pre>
+this defines a Forth word named <code>TICKER</code> that first initializes
+the variable to zero.  Then it runs a endless loop that, over and
+over, kills 1.5 seconds (1500 milliseconds) and increments the
+variable.  Note that we did not put a <code>PAUSE</code> inside the loop.  We
+could have, but it is not necessary in this case because the word
+<code>MS</code> includes a <code>PAUSE</code>.  It is very important that each task
+<code>PAUSE</code> appropriately, otherwise, once that task gets control, it
+will never release control and no other task will be able to run.
+So, if you create an endless loop, if no word executed within your
+loop calls <code>PAUSE</code>, then you must put an explicit <code>PAUSE</code> in your
+loop.
+
+<pre class="example">
+' TICKER TASK1 TASK!
+</pre>
+this tells the <code>TASK1</code> what word it should execute.  Note that we
+"tick" <code>TICKER</code> to get its address then store that word's address
+into <code>TASK1</code>.
+
+<p>
+Note also that we showed the initialization as being done
+interactively.  This is fine during testing.  Normally, though,
+for an application, you will initialize the task within the
+definition of another word, probably your application's boot word,
+e.g.,
+</p>
+<pre class="example">
+: MY-APP ( -)  
+  ...
+  ' TICKER  TASK1 TASK! 
+  ' SOMEOTHERWORD  TASK2  TASK!
+  TASK1 WAKE  TASK2 WAKE
+  ...
+;
+</pre>
+
+<p>
+After initializing the task with <code>TASK!</code>, the task is still not
+running until it is awakened with <code>WAKE</code>.  You can use the word
+<code>AWAKE?</code> to see whether a particular task is running.  You can
+verify <code>TICKER</code> in <code>TASK1</code> is running by checking the variable
+(<code>TICKS ?</code>) or by asking the task whether it is awake or not
+(<code>TASK1 AWAKE? .</code>).
+</p>
+<pre class="example">
+TASK1 WAKE
+</pre>
+this starts the task running (by inserting it into the active task
+list).
+
+</div>
+
+</div>
+
+<div id="outline-container-6.2" class="outline-3">
+<h3 id="sec-6.2">6.2 Stopping and starting a task </h3>
+<div id="text-6.2">
+
+
+<p>
+The previous section showed how to create a task and how to start it.
+To stop a task by name, say <code>TASK1 SLEEP</code> then to wake it again, say
+<code>TASK1 WAKE</code>.  Note that you cannot put the <code>TERMINAL</code> (i.e., the
+<code>FOREGROUND</code>) task to sleep.
+</p>
+<p>
+A task can put itself to sleep with <code>STOP</code>.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7">7 The Forth model </h2>
+<div id="text-7">
+
+
+
+</div>
+
+<div id="outline-container-7.1" class="outline-3">
+<h3 id="sec-7.1">7.1 Brief description </h3>
+<div id="text-7.1">
+
+
+<ol>
+<li>
+during development the address space is split between
+<ul>
+<li>
+Flash (the kernel)
+</li>
+<li>
+RAM (the extensions)
+
+</li>
+</ul>
+</li>
+<li>
+host side "smart terminal" is written in Tcl
+
+</li>
+<li>
+primitives are written in assembly language and assembled with the
+GNU ARM assembler.
+
+</li>
+<li>
+the host program runs in one of two modes;
+
+<ul>
+<li>
+generate a kernel image to be burned into the ARM's flash
+
+<p>
+This is a batch mode.  It runs entirely on the host and does not
+need a connection to the target.  It combines the primitives
+with high-level Forth and saves the result into two files:
+</p>
+<dl>
+<dt><code>*.bin</code></dt><dd>
+a binary image file, e.g., <code>kernel-lpc2294.bin</code>, to be
+burned into the target's flash.
+
+</dd>
+<dt><code>*.dictionary</code></dt><dd>
+a matching dictionary file, e.g.,
+<code>kernel-lpc2294.dictionary</code>, for use when running in interactive
+mode, to map Forth word names to target addresses.
+
+</dd>
+</dl>
+</li>
+<li>
+run interactively
+
+<p>
+This is the interactive mode.  This <b>does</b> require a connection
+to the target.  It is started by passing it the name of a kernel
+image, e.g., <code>kernel-lpc2294</code>, which causes it to load a
+dictionary file, e.g., <code>kernel-lpc2294.dictionary</code>, that matches
+the binary image running on the target.
+</p>
+<p>
+<code>./riscy.tcl -image kernel-lpc2294 -port /dev/ttyS0</code>
+</p>
+<p>
+(Well, really, you would set up a shell script or shell alias to
+type the above line for you.  See elsewhere in this manual.)
+</p>
+<p>
+In this mode, the user's keyboard input is executed by the
+target.  New Forth words can be defined.  Block files can be
+loaded.  All new words defined reside in RAM on the target.
+</p>
+<p>
+The main development mode this is: Define and exercise new
+words.  From time to time, when you are satisfied with the new
+words, generate a new kernel (to be burned into flash) that
+includes the new words.
+</p>
+<p>
+When running interactively, all numbers go to the target's data
+stack (when the host needs a number, it asks the target to send
+it back).
+</p>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+
+</div>
+
+<div id="outline-container-7.2" class="outline-3">
+<h3 id="sec-7.2">7.2 Additional notes </h3>
+<div id="text-7.2">
+
+
+<ul>
+<li>
+Symbolic constants 
+
+<p>
+Suppose you would like to refer to the address of one the many ARM
+CPU configuration registers, such as PINMODE3.  That configuration
+register address is 0xE002C04C.  In Forth, you could say
+</p>
+<p>
+<code>$E002C04C</code>
+</p>
+<p>
+but your code would be more readable if you referred to it by name
+as in
+</p>
+<p>
+<code>PINMODE3</code>
+</p>
+<p>
+Yet, there are so <b>many</b> of these configuration registers (see the
+file <code>equates-lpc2xxx.asm</code>), that you would hate to use dictionary
+space on the target to define them all.
+</p>
+<p>
+Fortunately, you do not need to define them.  You can just <b>use</b>
+them.  <code>riscy.tcl</code> knows how to look them up automatically.
+</p>
+<p>
+As <code>riscy.tcl</code> collects each word as it is compiling, it first
+checks to see if it an immediate word.  If so, it runs just on the
+host.  Otherwise, it checks to see if it is a word that has been
+defined for the target.  If so, it compiles the word to be sent to
+the target (either to be compiled or interpreted on the target).
+Otherwise, it checks the list of known constants (where, for
+example, it would find <code>PINMODE3</code>).  If so, it compiles the literal
+number.  Otherwise, tries to view the word as a number of some
+sort.  If so, it compiles the literal number.  Otherwise, it
+reports an error.
+</p>
+<p>
+Here are some examples of literal numbers:
+</p>
+
+
+
+<pre class="example">
+     $03F8
+     't
+     79
+</pre>
+
+
+
+
+</li>
+<li>
+Riscy Pygness has some <a href="#sec-11.10">colorForth</a> and/or cmFORTH features such as
+
+<ul>
+<li>
+"tail call optimization" (i.e., dropping <code>EXIT</code> when possible by
+changing the previous call to a jump).
+
+</li>
+<li>
+capability of having multiple entry points (Forth word names) and
+multiple exit points for a Forth word.
+
+</li>
+<li>
+<code>FOR ... NEXT</code>
+
+</li>
+<li>
+simple recursion (with no "smudging" of word names), e.g., the
+first and second versions below are equivalent:
+
+
+<pre class="example">
+: COUNT-DOWN ( u -)  ?DUP IF DUP . 1-  COUNT-DOWN ; THEN ; 
+</pre>
+
+<pre class="example">
+: COUNT-DOWN ( u -)  BEGIN ?DUP WHILE DUP . 1- REPEAT ; 
+</pre>
+
+</li>
+</ul>
+</li>
+<li>
+Threading 
+
+<p>
+Tokens use 13 bits (the most significant 13 bits of the token) to
+hold a token number, plus 3 bits for flags.  The 13-bit token
+number is used to index into a table of addresses to look up a full
+32-bit address (in either the flash token table or in the RAM token
+table).
+</p>
+</li>
+<li>
+Flags
+
+<ul>
+<li>
+Bit 0 of the token is the Exit Flag
+
+</li>
+<li>
+Bit 1 indicates whether to use the flash token table or the RAM
+token table,
+
+</li>
+<li>
+Bit 2 of the token is the Enter Flag (it indicates whether the
+word is a primitive or a high-level Forth word).
+
+</li>
+</ul>
+</li>
+<li>
+Heads 
+
+<p>
+Heads are stored only on the host, thus taking no space on the
+target chip.
+</p>
+</li>
+<li>
+New definitions are compiled by the host then sent to the target's
+RAM.
+
+</li>
+<li>
+Typical usage 
+
+<p>
+Interactive poking at your hardware and testing snippets from the
+keyboard are perhaps the strongest advantages of Forth for
+developing embedded systems.  These definitions go into RAM.  We
+work awhile and then, from time to time, the results are
+incorporated into the main source code and a new kernel (flash
+image) is generated.
+</p>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-7.3" class="outline-3">
+<h3 id="sec-7.3">7.3 Internals and Design </h3>
+<div id="text-7.3">
+
+
+<p>
+Riscy Pygness is a member of the Pygmy Forth family but is quite
+different from the 16-bit DOS Pygmy Forth.  It takes a number of <a href="#sec-11.10">ideas</a>
+from Charles Moore's colorForth, yet uses conventional Forth-style
+notation, rather than using color.
+</p>
+<p>
+There are many possible ways of <b>threading</b> the words within a
+higher-level word.  The method in this version is token-threaded code
+with 16-bit tokens.  This is a compromise between speed and
+conciseness that favors conciseness.  By using 16-bit tokens, a <b>lot</b>
+of code can be packed into the available flash (and RAM).  We could
+modify the threading to favor speed or even to favor greater
+conciseness.  Generally, though, I lean toward the usual Forth
+philosophy of ignoring performance until the application is working
+and then convert <b>just the bottlenecks</b> to <b>CODE</b> words (i.e., Forth
+words written in assembly language).
+</p>
+<p>
+The Forth image that is burned into flash consists of the <b>primitives</b>
+(which are written in assembly language and assembled by the GNU ARM
+assembler) and the <b>high-level Forth</b> (which is compiled by a Tcl
+program).  The Tcl program takes the binary image and a list of
+symbols and addresses produced by the assembler and merges them into
+an in-memory image on the host, along with the higher-level Forth,
+then writes that image to a file named, for example,
+<code>kernel-lpc2103.bin</code>, ready to be burned into flash on the target.  At
+the same time, it writes a matching dictionary file, such as
+<code>kernel-lpc2103.dictionary</code> that the host uses to map Forth word names
+to their addresses on the target.
+</p>
+<p>
+Typical development style is interactive, exercising the words in the
+dictionary and extending the dictionary on the fly to test and
+experiment.  From time to time, the high-level Forth that will go into
+flash is extended, based on these interactive sessions, and a new
+kernel (flash image) is created.  This cycle is repeated until the
+application is finished and all of it is in flash.
+</p>
+<p>
+In other words, you start with a base image in flash and do most of
+your work interactively (with extensions going into RAM).
+Periodically, you generate a new base image to be burned into flash
+that includes your new work.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8">8 Documentation for individual program files </h2>
+<div id="text-8">
+
+
+<p>
+This section holds documentation specific to various files in the
+distribution.  For better understanding of a system program (such as <code>make</code>
+or <code>objcopy</code>) you can view the manual for that program with a command
+such as one of the following
+</p>
+<ul>
+<li>
+<code>$ man make</code>
+
+</li>
+<li>
+<code>$ info make</code>
+
+</li>
+</ul>
+
+<p>or by googling.
+</p>
+
+</div>
+
+<div id="outline-container-8.1" class="outline-3">
+<h3 id="sec-8.1">8.1 makefile </h3>
+<div id="text-8.1">
+
+
+<p>
+The work of building the various parts of Riscy Pygness is controlled
+by a makefile named <code>makefile</code>.  The program <code>make</code> (as guided by the file
+<code>makefile</code>) takes care of the details.
+</p>
+<p>
+You need to look over, and possibly change, several variables for your
+system.
+</p>
+<p>
+See the section on <a href="#sec-8.1.2">makefile variables</a> for the ones you may need to edit.
+</p>
+<p>
+To assemble a file named <code>led1-2294.asm</code>, creating an Intel hex file
+suitable for downloading to the LPC-L2294 ARM board, type
+</p>
+<p>
+<code>$ make led1-2294.bin</code>
+</p>
+<p>
+Then, or instead, you could type                                
+</p>
+<p>
+<code>$ make led1-2294.dl</code>
+</p>
+<p>
+in order to assemble, if necessary, and then download using the
+<code>lpc21isp</code> downloader.
+</p>
+<p>
+To assemble <code>riscy.asm</code> to produce the <code>riscy.bin</code> file of primitives
+that will go into the Forth kernel, just type
+</p>
+<p>
+<code>$ make</code>
+</p>
+<p>
+Make will assemble <code>riscy.asm</code> and combine it with some high-level
+Forth to produce a kernel consisting of a <code>*.bin</code> file and a matching
+<code>*.dictionary</code> file.
+</p>
+<p>
+The process is slightly more complex in that <code>make</code> does not directly
+assemble <code>riscy.asm</code>.  Instead, <code>riscy.asm</code> serves as a template from
+which board-specific versions are created automatically.  It is these
+resulting files (such as <code>riscy-lpc2294.asm</code>) that are assembled.
+This lets the makefile create kernel images for all the supported
+ARM/board variants at one time.  If, for some reason, you would like
+to limit the work to just a single board variant, you could type
+</p>
+<p>
+<code>$ make lpc2106</code>
+</p>
+
+</div>
+
+<div id="outline-container-8.1.1" class="outline-4">
+<h4 id="sec-8.1.1">8.1.1 downloading to the flash </h4>
+<div id="text-8.1.1">
+
+
+<p>
+Then, burn the <code>*.bin</code> (e.g., <code>kernel-lpc2103.bin</code>) into the ARM's flash
+with
+</p>
+<p>
+<code>$ make kernel-lpc2103.dl</code>
+</p>
+<p>
+Note that some flash utilities (for example, the <code>lpc21isp</code> flash
+utility when given the <code>-control</code> option) will control the serial port's
+DTR and RTS lines in an attempt reset the ARM while holding the
+bootloader request line low.  This works only if your ARM board
+supports it.  For example, on the Olimex LPC-P2378 board, short the
+two jumpers <code>ISP_E</code> and <code>RST_E</code> if you wish this to work.  On hardware
+that does not support this, you need to change jumpers and/or push
+reset buttons manually in order for the bootloading to work.
+</p>
+<p>
+On the Olimex LPC-L2294 board, it is probably best to leave <code>RST_E</code> open
+and to manually short the <code>ISP_E</code> jumper and press the reset button when
+downloading a program.  Then, open the <code>ISP_E</code> jumper and press the
+reset button once again so the newly downloaded program can run.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-8.1.2" class="outline-4">
+<h4 id="sec-8.1.2">8.1.2 makefile variables </h4>
+<div id="text-8.1.2">
+
+
+<p>
+Edit the following variables in <code>makefile</code> depending on the particular
+ARM chip, serial port, path to the assembler, etc. that apply to your
+environment.
+</p>
+<p>
+The only ones you normally need to verify/edit are <code>CCLK</code> and <code>PORT</code>.
+</p>
+<dl>
+<dt><code>CCLK</code></dt><dd>
+the CPU clock speed of your board in KHz.  This is used by
+both the <code>lpc_prog</code> and the <code>lpc21isp</code> flash utilities.  Note that this
+is the external crystal speed when using the LPC2106 and some
+others but is always 14748 when using the LPC2378.
+
+</dd>
+<dt><code>PORT</code></dt><dd>
+the full path of your PC's serial port, such as <code>/dev/ttyS0</code>
+or <code>COM1:</code> for the first serial port.
+
+</dd>
+<dt><code>BIN</code></dt><dd>
+the full path to the directory that contains the ARM
+assembler (<code>arm-elf-as</code>) and other binutils utilities such as
+<code>arm-elf-objdump</code>.
+
+</dd>
+<dt><code>DLBAUD</code></dt><dd>
+the serial rate you wish to use for downloading.  This
+defaults to 38400.  Other possible speeds are 115200, 57600, 19200,
+9600, 4800, etc.
+
+</dd>
+<dt><code>PREASM</code></dt><dd>
+the full (or relative) path to the preprocessor that
+converts <code>*.asm</code> files into <code>*.s</code> files.  Normally the executable file
+is <code>preasm.tcl</code> but you could write a replacement in Python or <code>sed</code> or
+whatever if you prefer.  Its main purpose at the moment is to
+replace semicolons (my preferred comment character) with at-signs
+(the GNU ARM assembler's preferred comment character).
+
+</dd>
+<dt><code>LNKFLAGS</code></dt><dd>
+this includes the link script as well as flags.
+
+</dd>
+<dt><code>ASMFLAGS</code></dt><dd>
+flags passed to the assembler.
+
+</dd>
+<dt><code>LNKFLAGS</code></dt><dd>
+flags passed to the linker.
+
+</dd>
+<dt><code>ZIPFILES</code></dt><dd>
+a list of the files to be bundled together to create
+a Riscy Pygness distribution when I say <code>make bzip</code>.  You would not
+ordinarily need to do this.
+
+
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-8.2" class="outline-3">
+<h3 id="sec-8.2">8.2 riscy.tcl </h3>
+<div id="text-8.2">
+
+
+<p>
+<code>riscy.tcl</code> is a Tcl program that runs on the host.  It implements the
+host side of Riscy Pygness, i.e., the smart terminal.
+</p>
+
+</div>
+
+<div id="outline-container-8.2.1" class="outline-4">
+<h4 id="sec-8.2.1">8.2.1 starting the program </h4>
+<div id="text-8.2.1">
+
+
+<p>
+<code>riscy.tcl</code> program serves two purposes:
+</p>
+<ol>
+<li>
+Create a kernel image file suitable for burning into the ARM
+chip's flash.  This step also creates a matching dictionary
+file.  The command line for this would be something like
+
+<p>
+<code>$ ./riscy.tcl -flash 1</code>
+</p>
+<p>
+but you would not run this manually.  It would be done
+automatically by the makefile.
+</p>
+</li>
+<li>
+Run Riscy Pygness interactively, using the dictionary file
+previously created, and the matching kernel image file
+previously burned into the ARM chip's flash.  For example, if
+the kernel image and dictionary files are named
+<code>kernel-lpc2106.bin</code> and <code>kernel-lpc2106.dictionary</code>, your command
+line would be 
+
+<p>
+<code>$ ./riscy.tcl -image kernel-lpc2106  -port /dev/ttyS0</code>
+</p>
+<p>
+to run interactively (using the <code>/dev/ttyS0</code> serial port).  Of
+course, you could set up a shell script or alias to reduce your
+typing.  See the shell scripts <code>r</code> and <code>burn</code> for examples.
+</p>
+</li>
+</ol>
+
+<p>See below for more information and/or run <code>riscy.tcl</code> file with no
+arguments to see a help message describing how to use it.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-8.2.2" class="outline-4">
+<h4 id="sec-8.2.2">8.2.2 Variables </h4>
+<div id="text-8.2.2">
+
+
+<p>
+There are certain variables (and one procedure) in <code>riscy.tcl</code> that you
+should verify or change to suit your environment.  All of these are
+located near the top of the file.
+</p>
+<dl>
+<dt><code>isUnix</code></dt><dd>
+Set to 1 to run on Linux (or other Unixes).  If you wish
+to try running this on a Microsoft OS, change its
+value to 0.
+
+</dd>
+<dt><code>::debug</code></dt><dd>
+Leave this set to 0 for normal use.  Changing it to 1
+causes (way too many) debugging messages to be printed.  This
+setting can also be changed interactively with the Forth word
+<code>DEBUG</code>.
+
+</dd>
+<dt><code>::serialPort1</code></dt><dd>
+Set this to the name of the serial port you use to
+connect to the target ARM board.  Under Linux, this is usually
+either <code>/dev/ttyS0</code> or <code>/dev/ttyS1</code>.  Instead of setting it here, you
+can can specify it with the <code>-port</code> command line option, which will
+override the setting inside the program.
+
+</dd>
+<dt><code>::baudrate</code></dt><dd>
+Set this to the same baud rate that the ARM chip is
+set to use.  For the pre-built kernels, this is 38400 bps.
+
+</dd>
+<dt><code>filenameFromBlockNumber</code></dt><dd>
+This procedure maps Forth block
+numbers to file names.  You may add additional ranges and file
+names or change the existing ranges.  It is best not to change the
+first one, which maps the first thousand blocks (0 through 999) to
+the filename <code>kernel.fth</code>.
+
+
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-8.3" class="outline-3">
+<h3 id="sec-8.3">8.3 riscy.asm </h3>
+<div id="text-8.3">
+
+
+<p>
+There is nothing to customize in this file for normal use.  Of course,
+if you wish to add or delete or modify the primitives, this is where
+to do it.
+</p>
+<p>
+This file is not assembled directly.  Instead, it serves as a template
+file.  The <code>makefile</code> takes <code>riscy.asm</code> and modifies the following
+equate
+</p>
+<p>
+<code>.equ &lt;BOARD&gt;, 1</code>
+</p>
+<p>
+to replace "&lt;BOARD&gt;" with the appropriate symbol for a specific ARM/board
+variant.  For example, when assembling the primitives for the Olimex
+LPC-P2106 board, <code>makefile</code> replaces "&lt;BOARD&gt;" with "lpc2106" so the
+line becomes
+</p>
+<p>
+<code>.equ lpc2106, 1</code>
+</p>
+<p>
+in a new file named <code>riscy-lpc2106.asm</code>.  The file <code>riscy-lpc2106.asm</code>
+is the one actually assembled (after pre-processing it).
+</p>
+<p>
+If you add a new ARM/board variant, you will need to pick a new
+symbol to represent that variant, then add it to <code>makefile</code> and also to
+<code>riscy.asm</code>.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-8.4" class="outline-3">
+<h3 id="sec-8.4">8.4 custom include files </h3>
+<div id="text-8.4">
+
+
+<p>
+Rather than putting lots of <code>.ifdef</code> statements throughout <code>riscy.asm</code> to
+adjust for the various ARM/board variants, we factor the differences
+for each variant into a custom include file (with a name such as
+<code>custom-lpc2106.asm</code> or <code>custom-lpc2294.asm</code>).  A single conditional
+directive in <code>riscy.asm</code> picks the appropriate include file.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-9" class="outline-2">
+<h2 id="sec-9">9 Support Software </h2>
+<div id="text-9">
+
+
+</div>
+
+<div id="outline-container-9.1" class="outline-3">
+<h3 id="sec-9.1">9.1 Binutils (assembler, etc.) </h3>
+<div id="text-9.1">
+
+
+<p>
+The GNU ARM toolchain supplies the assembler (and linker and debugger,
+etc.).
+</p>
+<p>
+The full GNU ARM toolchain (with gcc, the C compiler) is not needed,
+just the <code>binutils</code> package, which is easy to install.  Binutils
+supplies the assembler and linker and various object file tools.  It
+can be installed as a binary package &ndash; there are a number of sites on
+the web supplying precompiled ARM toolchains or you can compile
+binutils yourself.
+</p>
+<p>
+Note, the GNU tools can be given a prefix when you compile them so
+that there is no conflict between the ones for the ARM and the ones
+for your native Linux system.  For example, I use 'arm-elf-' as the
+prefix, so my ARM assembler is named 'arm-elf-as' while my native x86
+assembler is named simply 'as'.
+</p>
+<p>
+Also, note that the assembler is used only for the primitives.  Some
+Forth implementations cram the high-level definitions into the
+assembly source in a highly unreadable fashion, but Riscy Pygness
+expresses the high-level definitions in straightforward Forth.
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-9.2" class="outline-3">
+<h3 id="sec-9.2">9.2 Gdb or Insight </h3>
+<div id="text-9.2">
+
+
+<p>
+It might be convenient to use the GNU debugger in a few cases to trace
+through and correct certain primitives.
+</p>
+<p>
+To use the GNU debugger, you also need to install the gdb package for
+the ARM.
+</p>
+<p>
+<code>Insight</code> is a GUI front end to <code>gdb</code>.
+</p>
+<p>
+Because the version of GDB included with <code>Insight</code> is on old version,
+the bundle of tools includes just the newer GDB.  It works well from
+within Emacs, so we don't need <code>Insight</code>.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-9.3" class="outline-3">
+<h3 id="sec-9.3">9.3 Tcl </h3>
+<div id="text-9.3">
+
+
+<p>
+The host-side of Riscy Pygness is written in Tcl.  See <code>riscy.tcl</code>.
+</p>
+<p>
+We use a recent version of Tclkit for a 32-bit i386 Linux.  It is
+stored in <code>/usr/local/bin</code> and symlinked (soft linked) to the name
+<code>/usr/local/bin/tclkit</code>.  If you use a different path to Tcl, then
+edit the top line of <code>riscy.tcl</code>.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-9.4" class="outline-3">
+<h3 id="sec-9.4">9.4 Flash Utilities (downloaders) </h3>
+<div id="text-9.4">
+
+
+<p>
+There are several ways to burn the Forth image into the target's
+flash.
+</p>
+<p>
+The NXP LPC ARM (and other manufacturers') chips contain a serial
+<span style="text-decoration:underline;">bootloader</span>.
+</p>
+<p>
+A serial bootloader is a program residing in the target chip's flash
+that allows a <span style="text-decoration:underline;">flash utility</span> on the host (the desktop PC) to burn a
+program into the target's flash memory via a serial line.
+</p>
+<p>
+The host-side program is often called a <span style="text-decoration:underline;">flash utility</span> or a
+<span style="text-decoration:underline;">downloader</span>.
+</p>
+<p>
+NXP has an official flash utility that runs only on a Microsoft OS.
+Fortunately, several people have written flash utilities that are more
+platform independent.
+</p>
+<p>
+Another way of burning a program into flash is to use a <span style="text-decoration:underline;">JTAG</span> in
+connection with a program on the host such as <a href="http://openocd.berlios.de/web/">OpenOCD</a>.
+</p>
+<p>
+I have used the serial flash utilities by Martin Maurer and by Edwin
+Olson very happily, and sometimes OpenOCD with an Olimex JTAG cable.
+<code>lpc21isp</code> is included in the bundle of tools.
+</p>
+
+</div>
+
+<div id="outline-container-9.4.1" class="outline-4">
+<h4 id="sec-9.4.1">9.4.1 running lpc21isp </h4>
+<div id="text-9.4.1">
+
+
+<p>
+I download code to be burned into the onboard Flash using the chip's
+built-in bootloader combined with Martin Maurer's <code>lpc21isp</code> flash
+utility program that runs under either Linux or Microsoft Windows.
+</p>
+<p>
+Martin Maurer's <code>lpc21isp</code> is available from
+<a href="http://tech.groups.yahoo.com/group/lpc21isp">http://tech.groups.yahoo.com/group/lpc21isp</a> (the Yahoo lpc21ispgroup)
+and a version is also included on the Riscy Pygness web site.
+</p>
+<p>
+I run it to download the binary file <code>kernel-lpc2106.bin</code>, with the
+command
+</p>
+<p>
+<code>$ lpc21isp -verify -bin kernel-lpc2106.bin /dev/ttyS0 38400 14746</code>
+</p>
+<p>
+where <code>/dev/ttyS0</code> is the serial port I am using and <code>38400</code> is the baud
+rate and <code>14746</code> is the speed of the crystal in KHz of the board I'm
+using (i.e., 14.746 MHz).
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-9.4.2" class="outline-4">
+<h4 id="sec-9.4.2">9.4.2 Compiling lpc21isp </h4>
+<div id="text-9.4.2">
+
+
+<p>
+Download the source, unzip it into <code>/usr/local/src</code>, then compile it,
+then soft-link it into the <code>/usr/local/bin</code> directory.
+</p>
+<p>
+It is a very easy compile.  Just unzip, cd to its directory, then type
+<code>make</code>.  Then, make sure the resulting binary is in your path.  (Of
+course, you have to have <code>make</code> and a C compiler installed.)
+</p>
+<p>
+What I do is to unzip it (untar it, whatever) into <code>/usr/local/src/</code>
+which creates a subdirectory named <code>lpc21isp</code>.  Then I rename that
+subdirectory to include its version number, e.g.,
+</p>
+<p>
+<code># mv lpc21isp lpc21isp_179</code>
+</p>
+<p>
+Then I <code>cd</code> to that directory and run <code>make</code>.  This produces the binary
+<code>/usr/local/src/lpc21isp_179/lpc21isp</code>.  Then I soft-link it to
+<code>/usr/local/bin/lpc21isp</code> so it will be in my path.
+</p>
+<p>
+<code># ln -s /usr/local/src/lpc21isp_179/lpc21isp /usr/local/bin/lpc21isp</code>
+</p>
+<p>
+I am using version 1.79.  Here is the source code:
+</p>
+<p>
+<a href="http://pygmy.utoh.org/riscy/lpc21isp-1.79.tar.gz">http://pygmy.utoh.org/riscy/lpc21isp-1.79.tar.gz</a>
+</p>
+<p>
+You can look for newer source either in the Yahoo lpc21isp group or
+at <a href="http://sourceforge.net/projects/lpc21isp/">http://sourceforge.net/projects/lpc21isp/</a>.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-9.4.3" class="outline-4">
+<h4 id="sec-9.4.3">9.4.3 Example of programming the LPC2106 </h4>
+<div id="text-9.4.3">
+
+
+<p>
+First, orient your board so "Olimex" reads correctly from left to
+right, then the serial connector is at the top left and the power
+connector is at the top right and the blank wire-wrap area is at the
+bottom.
+</p>
+<p>
+Here is how I have my board jumpered:
+</p>
+<ul>
+<li>
+<code>Debug</code> (upper right corner) is open.
+
+</li>
+<li>
+<code>J1</code> (middle of top edge) is open.
+
+</li>
+<li>
+<code>LED_J</code> (just to the right of the red LED) is shorted.
+
+</li>
+<li>
+<code>BSL</code> (top left) is closed when programming the flash and open when
+not programming the flash
+
+</li>
+</ul>
+
+<p>Then I open a terminal and get my <code>lpc21isp</code> command ready to go, but
+don't hit <code>RET</code> yet.  Then, I short the <code>BSL</code> jumper.  Then I press <code>RET</code> at
+about the same time I press and release the reset button on the board
+(<code>RST</code> is the small push button just to the right of the CPU chip).
+</p>
+<p>
+After successfully downloading to the flash, the <code>lpc21isp</code> program may
+say it has jumped to the program, but of course it has not, and
+cannot, because <code>BSL</code> is still shorted.  Once the flash has been
+programmed, I open the <code>BSL</code> jumper and press the reset button again.
+If all is well, the LED should blink 6 times (because <code>riscy.asm</code>
+contains the code to blink the LED 6 times).
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-9.4.4" class="outline-4">
+<h4 id="sec-9.4.4">9.4.4 Other bootloader flash utilities </h4>
+<div id="text-9.4.4">
+
+
+<dl>
+<dt>lpc2k<sub>pgm</sub></dt><dd>
+<a href="http://www.pjrc.com/arm/lpc2k_pgm">http://www.pjrc.com/arm/lpc2k_pgm</a>
+
+</dd>
+<dt>lpc<sub>prog</sub></dt><dd>
+
+<p>
+<a href="http://www.blisstonia.com/software/lpc_prog_20060709.tgz">http://www.blisstonia.com/software/lpc_prog_20060709.tgz</a> by Edwin
+Olson, license GPL, per his posting to the lpc2000@yahoogroups.com
+mailing list.  (There may be newer versions by the time you read
+this).  The '2006' is a typo in the file name and the referenced
+file is the version that was current as of July 9, 2007.  (I have
+used the earlier version of 20070503 successfully with the
+lpc2378.)
+</p>
+
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-9.5" class="outline-3">
+<h3 id="sec-9.5">9.5 Make </h3>
+<div id="text-9.5">
+
+
+<p>
+<code>make</code> is a program for executing commands based on declared
+dependencies.  It allows you to say
+</p>
+<p>
+<code>$ make xxx.bin</code>
+</p>
+<p>
+and have the appropriate commands executed automatically to 
+</p><ul>
+<li>
+preprocess <code>xxx.asm</code> to produce <code>xxx.s</code>
+</li>
+<li>
+assemble <code>xxx.s</code> to produce <code>xxx.o</code>
+</li>
+<li>
+link <code>xxx.o</code> to produce <code>xxx.elf</code> (and produce a list of symbols)
+</li>
+<li>
+run objcopy on <code>xxx.elf</code> to produce <code>xxx.bin</code>
+
+</li>
+</ul>
+
+<p>However, <code>make</code> checks the timestamps on the files and only does the
+above steps that need doing.
+</p>
+<p>
+See the file <code>makefile</code> in the distribution for the details.  You will
+need to check the settings and adjust them for your environment, as
+described in the <a href="#sec-8.1.2">makefile variables section</a>.  For example, you will
+need to set the <code>BIN</code> variable to point to the correct path to your
+<code>arm-elf-as</code> file.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-9.6" class="outline-3">
+<h3 id="sec-9.6">9.6 Terminal </h3>
+<div id="text-9.6">
+
+
+<p>
+You can run the smart terminal (i.e., <code>riscy.tcl</code>) directly from a
+terminal shell (a command line prompt) but it is often more convenient
+to run it from within Emacs.  Emacs provides command history and
+command completion.  Emacs even provides a text editor.  See <a href="#sec-11.8">Emacs</a> for
+some details about how to learn and use it.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-10" class="outline-2">
+<h2 id="sec-10">10 Limitations and cautions </h2>
+<div id="text-10">
+
+
+
+</div>
+
+<div id="outline-container-10.1" class="outline-3">
+<h3 id="sec-10.1">10.1 Switching <b>back</b> to interactive mode with <code>;;</code> </h3>
+<div id="text-10.1">
+
+
+<p>
+When you are typing interactively or when you <code>LOAD</code> from a block,
+<code>riscy.tcl</code> needs to be able to tell whether to compile or interpret.
+It does this a <b>string</b> at a time.  When typing, the string is the
+single line.  When you <code>LOAD</code> a block, the string is the entire block.
+</p>
+<p>
+The rule that <code>riscy.tcl</code> follows is that it starts each string in
+interpret mode and stays in interpret mode unless it sees a colon.
+Once it sees a colon, it switches to compiling mode and stays in
+compiling mode until it reaches the end of the string unless it sees a
+double semicolon (<code>;;</code>).
+</p>
+<p>
+You rarely need to use <code>;;</code>.  Mostly, it would be used on a block that
+defined one or more words and then needed to switch back to
+interpreting.  For most blocks, you would stay entirely in one mode or
+the other and would not need to use <code>;;</code>.
+</p>
+<p>
+Here is an example typed at the keyboard that would not work:
+</p>
+
+<pre class="example">
+: STARS  ( n -)  FOR  '* EMIT  NEXT  ;   3 STARS
+</pre>
+
+<p>
+Because it is all typed on a single line, it would switch to compiling
+mode when it saw the <code>:</code> and stay in compiling mode until the end of the
+string, thus it would <b>not</b> execute the <code>3 STARS</code> part.  You might be
+asking why the semicolon does not switch back to interpreting mode.
+The answer is that a single Forth word can have multiple exits.
+</p>
+<p>
+The solution to the first example <b>could</b> be 
+</p>
+<pre class="example">
+: STARS  ( n -)  FOR  '* EMIT  NEXT  ;   ;;  3 STARS
+</pre>
+
+<p>
+but that is awkward and unnecessary.  Instead, when typing
+interactively, just use two lines:
+</p>
+<pre class="example">
+: STARS  ( n -)  FOR  '* EMIT  NEXT  ;   
+3 STARS
+</pre>
+
+<p>
+and no problem.
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-10.2" class="outline-3">
+<h3 id="sec-10.2">10.2 Interactive strings </h3>
+<div id="text-10.2">
+
+
+<p>
+If you type
+</p>
+<pre class="example">
+ " THIS IS A STRING"
+</pre>
+
+<p>
+it will "interpret" the string, leaving the address of the string on
+the data stack.  However, that won't be of much use, as the next thing
+you type will overlay the string.  So, don't expect this to work
+</p>
+<pre class="example">
+ " THIS IS A STRING"  
+ COUNT TYPE
+</pre>
+
+<p>
+The solution in this case is to do it all on a single line:
+</p>
+<pre class="example">
+ " THIS IS A STRING"  COUNT TYPE
+</pre>
+
+<p>
+Of course, you could <b>compile</b> a string in a colon definition and the
+string would not get overwritten.  You could do this:
+</p>
+<pre class="example">
+ : MSG ( - a)  " THIS IS A STRING"  ;
+ MSG COUNT TYPE
+ MSG
+ COUNT
+ TYPE
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-10.3" class="outline-3">
+<h3 id="sec-10.3">10.3 C, </h3>
+<div id="text-10.3">
+
+
+<p>
+For now, at least, C, works only in non-interactive mode.  So, it
+could still be useful in populating a table in flash, e.g.,
+</p>
+<pre class="example">
+  TABLE XX
+    $46 C,
+    $47 C,
+    $48 C,
+    $49 C,
+</pre>
+
+<p>
+but cannot be used or tested when running interactively (an error
+message will suggest using , instead).
+</p>
+<p>
+The work-around is to use , instead of C, and pad out the tail end of
+the table to a full-word boundary, e.g.,
+</p>
+<pre class="example">
+  TABLE YY
+    $49484746 ,
+</pre>
+
+<p>
+(Remember, the ARM in the LPC chips is little endian.)
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-10.4" class="outline-3">
+<h3 id="sec-10.4">10.4 Constants and LOAD </h3>
+<div id="text-10.4">
+
+
+<p>
+When generating a kernel image, <code>LOAD</code> requires an actual number, rather
+than a Forth constant.  So,
+</p>
+<p>
+<code>3 LOAD</code> 
+</p>
+<p>
+appearing on a LOAD block would cause trouble if 3 had been defined as
+a constant.
+</p>
+<p>
+We are unlikely to need to load block -1 or block -2, so -1 and -2 are
+defined as constants.
+</p>
+<p>
+We <b>could</b> define 0, 1, 2. 3 or whatever as constants if we changed the
+numbers passed to <code>LOAD</code> to actual numbers, e.g.,
+</p>
+<p>
+<code>03 LOAD</code>
+</p>
+<p>
+would work, providing there was no Forth word defined named <code>03</code>.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-11" class="outline-2">
+<h2 id="sec-11">11 Appendix </h2>
+<div id="text-11">
+
+
+
+</div>
+
+<div id="outline-container-11.1" class="outline-3">
+<h3 id="sec-11.1">11.1 Linux and the command line </h3>
+<div id="text-11.1">
+
+
+<p>
+To read this manual and to work with Riscy Pygness, it helps to have a
+certain familiarity with computers, Linux, and the command line.  You
+probably have that already if you are working with target ARM boards.
+</p>
+<p>
+Nevertheless, here is a quick rundown on various topics with
+suggestions on where to get more information if you need it.
+</p>
+
+</div>
+
+<div id="outline-container-11.1.1" class="outline-4">
+<h4 id="sec-11.1.1">11.1.1 terminal </h4>
+<div id="text-11.1.1">
+
+<p>This gives you a place to type commands.  (Actually, the commands are
+typed into the <code>shell</code> program, typically <code>bash</code>, that is running in
+the terminal.)  I usually run the program <code>gnome-terminal</code> for this,
+but any such terminal program will work.
+</p>
+<p>
+In this manual, often the commands to be typed will be shown preceded
+by <code>$</code> or <code>#</code>.  Do not type this initial <code>$</code> or <code>#</code>.  It merely
+represents the terminal's (the shell's) prompt.  <code>#</code> indicates the
+command is typed as the superuser.  <code>$</code> indicates the command is typed
+as an ordinary user. Note that a <code>#</code> appearing later in the command is
+completely different: it means the rest of the line is a comment (and
+you would not type the comment).
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.2" class="outline-4">
+<h4 id="sec-11.1.2">11.1.2 command line </h4>
+<div id="text-11.1.2">
+
+<p>See <code>terminal</code> above.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.3" class="outline-4">
+<h4 id="sec-11.1.3">11.1.3 command prompt </h4>
+<div id="text-11.1.3">
+
+<p>See <code>terminal</code> above.  
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.4" class="outline-4">
+<h4 id="sec-11.1.4">11.1.4 shell </h4>
+<div id="text-11.1.4">
+
+<p>See <code>terminal</code> above.  
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.5" class="outline-4">
+<h4 id="sec-11.1.5">11.1.5 directory listings </h4>
+<div id="text-11.1.5">
+
+<p>To list the contents of a directory (in a terminal), type
+</p>
+<pre class="example">
+ls -als
+</pre>
+
+<p>
+To see the various options for the <code>ls</code> command, type
+</p>
+<pre class="example">
+man ls
+</pre>
+
+<p>
+I usually set up a <code>dir</code> alias so that when I type <code>dir</code>, what gets
+executed is <code>ls -als</code>.  Such aliases are typically set up by editing
+your <code>~/.bashrc</code> file, but they can be set up on the fly at a command
+prompt, e.g.,
+</p>
+<pre class="example">
+alias dir='ls -als'
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-11.1.6" class="outline-4">
+<h4 id="sec-11.1.6">11.1.6 becoming root </h4>
+<div id="text-11.1.6">
+
+
+<p>
+Some commands need to be typed as the superuser (also known as root).
+</p>
+<p>
+Some Linux distributions use a root account with a password.  In that
+case, type <code>su</code> then enter the password when prompted.
+</p>
+<p>
+In other Linux distributions, you may need to type something like:
+</p>
+<pre class="example">
+ $ sudo -i
+</pre>
+
+<p>
+or
+</p>
+<pre class="example">
+  $ sudo su
+</pre>
+
+<p>
+Otherwise, look for how to do it in your distribution's documentation
+or on Google.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.7" class="outline-4">
+<h4 id="sec-11.1.7">11.1.7 unzipping </h4>
+<div id="text-11.1.7">
+
+<p>I use this as a general term for uncompressing a compressed file,
+regardless of whether it was zip'd, tar'd, gzip'd, bzip2'd, etc.  The
+extension on the file generally indicates which program you should
+use.  Here are some examples:
+</p>
+<dl>
+<dt>xyz.zip</dt><dd>
+<code>unzip xyz.zip</code>
+
+</dd>
+<dt>xyz.tar</dt><dd>
+<code>tar -xvf xyz.tar</code>
+
+</dd>
+<dt>xyz.tar.gz</dt><dd>
+<code>tar -xzvf xyz.tar.gz</code>
+
+</dd>
+<dt>xyz.tar.bz2</dt><dd>
+<code>tar -xjvf xyz.tar.bz2</code>
+
+</dd>
+</dl>
+
+<p>If in doubt about the type of file, run the <code>file</code> command on it.
+E.g., <code>file xyz.zip</code> should indicate that it is a zip file.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.8" class="outline-4">
+<h4 id="sec-11.1.8">11.1.8 soft linking </h4>
+<div id="text-11.1.8">
+
+<p>This is sometimes referred to as a symlink or a symbolic link.  It
+let's you store a file somewhere (perhaps
+<code>/usr/local/src/lpc21isp_179/lpc21isp</code>) yet refer to it via a
+directory that is in your path, such as <code>/usr/local/bin/lpc21isp</code>.
+</p>
+<p>
+We could set up the above link this way (as root):
+</p>
+<pre class="example">
+# ln -s /usr/local/src/lpc21isp_179/lpc21isp  /usr/local/bin/lpc21isp
+</pre>
+
+<p>
+If we later install a newer version, say as
+<code>/usr/local/src/lpc21isp_180/lpc21isp</code>, we can change the soft link
+with
+</p>
+<pre class="example">
+# ln -sf /usr/local/src/lpc21isp_180/lpc21isp  /usr/local/bin/lpc21isp
+</pre>
+
+<p>
+(Here we added the <code>-f</code> option to "force" the overwrite of the
+existing link.)
+</p>
+<p>
+Another place we do this is with Tclkit.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.9" class="outline-4">
+<h4 id="sec-11.1.9">11.1.9 path </h4>
+<div id="text-11.1.9">
+
+<p>This refers to a file name, including the directory information needed
+to find it.  The path can be absolute, such as <code>/usr/local/bin/tclkit</code>
+(note the leading <code>/</code>) or it can be relative to the current directory,
+such as <code>tclkit</code> (note the absence of a leading <code>/</code>).
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.10" class="outline-4">
+<h4 id="sec-11.1.10">11.1.10 target </h4>
+<div id="text-11.1.10">
+
+<p>This is your ARM board
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.11" class="outline-4">
+<h4 id="sec-11.1.11">11.1.11 host </h4>
+<div id="text-11.1.11">
+
+<p>This is your Linux desktop (or laptop or whatever) computer.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.12" class="outline-4">
+<h4 id="sec-11.1.12">11.1.12 local documentation </h4>
+<div id="text-11.1.12">
+
+<p>The typical Linux computer is filled with documentation.
+</p>
+<ul>
+<li>
+Look for a <code>doc</code> directory, e.g., <code>/usr/share/doc/</code> and then for a
+subdirectory named after the program you want documentation for,
+e.g., <code>/usr/share/doc/openocd/</code>.
+
+</li>
+<li>
+the <code>man</code> command (short for "manual"), e.g., <code>man openocd</code> or <code>man      bash</code> or <code>man ls</code>
+
+</li>
+<li>
+the <code>info</code> command, e.g., <code>info emacs</code>
+
+</li>
+<li>
+the <code>apropos</code> command, e.g., <code>apropos terminal</code>, to give you clues as
+to which programs on your system my be appropriate.
+
+</li>
+<li>
+the search function within your Linux package manager (such as
+<code>synaptic</code> in a Debian or Ubuntu system).  This can give you ideas
+as to what programs (already installed or not) might be useful.
+
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.13" class="outline-4">
+<h4 id="sec-11.1.13">11.1.13 external documentation </h4>
+<div id="text-11.1.13">
+
+<p>Google or some other search engine should take care of anything else.
+For example, in the <a href="#sec-3">Getting started</a> section, there is a mention of
+shell aliases.  If you do not know what that means, you could Google
+for "shell aliases".
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.1.14" class="outline-4">
+<h4 id="sec-11.1.14">11.1.14 keystrokes </h4>
+<div id="text-11.1.14">
+
+<p>This manual uses the Emacs convention for representing keystrokes.
+For example, <code>C-c</code> means to press and release the "c" key while
+holding down the Control key.  Below are some more examples, but for a
+full description, run the Emacs tutorial (from within Emacs).
+</p>
+<dl>
+<dt><code>C-h</code></dt><dd>
+while holding down the Control key, press and release the
+"h" key.
+
+</dd>
+<dt><code>C-ht</code></dt><dd>
+Control h followed by t (within Emacs, this starts the tutorial)
+
+</dd>
+<dt><code>RET</code></dt><dd>
+press the Return (or Enter) key
+
+</dd>
+<dt><code>M-x</code></dt><dd>
+while holding down the "meta" key (i.e., the Alt key on
+most keyboards), press and release the "x" key.
+
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-11.2" class="outline-3">
+<h3 id="sec-11.2">11.2 Putting Ubuntu on a USB stick </h3>
+<div id="text-11.2">
+
+<p>Download a copy of Ubuntu 10.04.1 (the 32-bit i386 desktop version)
+available from <a href="http://ubuntu.com">http://ubuntu.com</a>.  Save this to disk.  It is a CD
+image file named something like <code>ubuntu-10.04.1-desktop-i386.iso</code>.  
+</p>
+<p>
+Write that CD image file to a blank CD-R disc to create a bootable
+CD.  This installation CD is also a live CD that you can boot and run
+without disturbing your computer's hard drive.
+</p>
+<p>
+Boot a PC with the Ubuntu Linux installation CD.  You may need to
+alter your computer's set up settings to allow booting from a CD.
+Some computers, such as HP, allow you to bring up a boot menu by
+pressing Esc or whatever as you power up the computer.
+</p>
+<p>
+Plug a flash USB stick into your PC.
+</p>
+<p>
+While running Ubuntu, click on the "System" menu at the top of the
+screen.  Click on "Administration".  Click on "Startup Disk Creator".
+</p>
+<p>
+You will see a window titled "Make Startup Disk".  In the "Source disc
+image (.iso) or CD:" field, choose the CD you booted from, or else
+choose the CD image file (<code>ubuntu-10.04.1-desktop-i386.iso</code>).
+</p>
+<p>
+In the "Disk to use:" field, select the flash USB stick.  If you have
+more than one USB disk connected, be sure to choose the correct one.
+Click on the "Erase Disk" button.
+</p>
+<p>
+Under the "Stored in reserved extra space" radio button, slide the
+"How much:" slider to as reasonable size.  I would give it everything
+over 1G.  So, if you are using a 2G USB stick, give it 1G.  If you are
+using a 4G USB stick, give it 3G.  Then click the "Make Startup Disk"
+button.
+</p>
+<p>
+When it finishes, you should have a USB stick that can be used to boot
+the computer.  Furthermore, it is a USB stick which will save your
+settings and added software.  It becomes an entire Riscy Pygness
+development system that you can carry on your key chain (of course it
+needs a real computer, if only temporarily, to do anything useful).
+</p>
+<p>
+You only need to do this step once, so borrow a PC if yours does not
+have a CD drive.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.3" class="outline-3">
+<h3 id="sec-11.3">11.3 Board notes </h3>
+<div id="text-11.3">
+
+
+
+</div>
+
+<div id="outline-container-11.3.1" class="outline-4">
+<h4 id="sec-11.3.1">11.3.1 Olimex LPC-P2103 board </h4>
+<div id="text-11.3.1">
+
+
+<p>
+Riscy Pygness works well on this chip and board.  The main Riscy
+Pygness download also includes <code>led1-2103.asm</code> as a small test program
+to flash the Olimex board's LED, as a way of verifying the board and
+your connections to it.
+</p>
+<p>
+What about board jumper settings?  This is what worked for <code>lpc21isp</code>:
+</p>
+<dl>
+<dt><code>DBG_E</code></dt><dd>
+shorted or open
+
+</dd>
+<dt><code>JTAG cable</code></dt><dd>
+plugged in or not
+
+</dd>
+<dt><code>JRST</code></dt><dd>
+open
+
+</dd>
+<dt><code>BSL</code></dt><dd>
+shorted when running <code>lpc21isp</code> but open to then run the Forth
+
+</dd>
+</dl>
+
+<p>Note, however, that if OpenOCD had been running, you have to power off
+the ARM board after killing OpenOCD.  It is not enough to merely press
+the reset button; the board must be power cycled.
+</p>
+<p>
+For JTAG, something like
+</p>
+<p>
+<code>$ openocd -f interface/olimex-jtag-tiny.cfg -f target/lpc2103.cfg</code>
+</p>
+<p>
+might do it.  Note, though, that the <code>lpc2103.cfg</code> file has this line
+</p>
+<p>
+<code>flash bank lpc2000 0x0 0x8000 0 0 0 lpc2000_v2 12000 calc_checksum</code>
+</p>
+<p>
+but my Olimex LPC-P2103 board has a 14.7456 crystal.
+</p>
+<p>
+So, I created a custom <code>lpc2103.cfg</code> file in my working directory that
+changes the flash line to
+</p>
+<p>
+<code>flash bank lpc2000 0x0 0x8000 0 0 0 lpc2000_v2 14746 calc_checksum</code>
+</p>
+<p>
+and I also added this line
+</p>
+<p>
+<code>jtag_khz 50</code>
+</p>
+<p>
+to slow down the interface enough that it would work.
+</p>
+<p>
+For this to work, I short the <code>DBG_E</code> jumper (and, of course, I plug in
+the JTAG cable).
+</p>
+<p>
+Note, sometimes I need to start the <code>openocd</code> program more than once
+before it finally comes up without errors.  I suppose I could make it
+more likely to work by reducing the <code>jtag_khz 50</code> line even further.
+</p>
+<p>
+The button on this board is normally open.  The button signal is
+pulled up, so it is normally high.  When the button is pressed, it
+shorts the button signal to ground.  The button signal is connected to
+U1 (the LPC2103 chip) pin 45, P0.15/EINT2/RI1.
+</p>
+<p>
+See <code>custom-lpc2103.asm</code>.  That pin (P0.15), as with all the I/O pins,
+has been configured as an I/O pin and is an input pin, which is just
+what we want.  We also use the fast I/O facility.
+</p>
+<p>
+So, for example, to read the button we could use
+</p>
+
+<pre class="example">
+  : BIT15 ( - mask)  $00008000  ;
+  : BUT? ( - f) FIO0PIN @ BIT15 AND 0= ;  ( returns true if the button is pressed)
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-11.3.2" class="outline-4">
+<h4 id="sec-11.3.2">11.3.2 LPC2106 </h4>
+<div id="text-11.3.2">
+
+
+<p>
+Here are some <a href="http://pygmy.utoh.org/riscy/photos.html">thumbnails</a> (just click on them to see the full size
+images) of the <a href="http://www.olimex.com">Olimex</a> LPC-P2106 board and my MMC/SD interface to it.
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-11.3.3" class="outline-4">
+<h4 id="sec-11.3.3">11.3.3 LPC2378 (LPC23XX) </h4>
+<div id="text-11.3.3">
+
+
+<p>
+The main Riscy Pygness download includes <code>led1-2378.asm</code> as a small test
+program to flash the Olimex board's LED.
+</p>
+<p>
+Pin-out <a href="http://pygmy.utoh.org/riscy/pinoutsP2378.html">diagrams</a> for the connectors on the Olimex LPC P2378
+development board.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-11.4" class="outline-3">
+<h3 id="sec-11.4">11.4 Tools summary </h3>
+<div id="text-11.4">
+
+
+<p>
+To generate Riscy Pygness from the bottom up, the tools needed are
+</p>
+<dl>
+<dt>binutils for the ARM</dt><dd>
+Note this provides the cross-assembler (and
+the cross-linker, etc.)  It runs on the host but handles assembling
+and linking for the target ARM CPU.  This package provides the
+assembler, linker, object file manipulator, etc.  It is very easy
+to compile the binutils package.  See the <a href="#sec-11.11">GNU Toolchain</a> section.
+
+</dd>
+<dt>make</dt><dd>
+One way of looking at the <code>make</code> program is that it remembers
+the complicated steps that need to be taken so that you don't have
+to remember them.  The file <code>makefile</code> is where these details are
+stored. 
+
+</dd>
+<dt>flash utility</dt><dd>
+You need something to burn a binary image into the
+ARM's flash (<a href="#sec-11.6">OpenOCD with JTAG</a>, <code>lpc21isp</code>, etc.). I usually use
+<code>lpc21isp</code> for this.
+
+</dd>
+<dt>Tcl</dt><dd>
+I use Tclkit, a single-file distribution of Tcl/Tk.  (We
+don't need Tk.)  There are versions of Tclkit for lots of different
+machines.  I put the one for my machine in <code>/usr/local/bin/</code> and
+symlink it to the name <code>tclkit</code>.  (See the first line in the file
+<code>riscy.tcl</code>.)
+
+</dd>
+</dl>
+</div>
+
+</div>
+
+<div id="outline-container-11.5" class="outline-3">
+<h3 id="sec-11.5">11.5 FAQ </h3>
+<div id="text-11.5">
+
+
+<dl>
+<dt>Where is the Forth compiled?</dt><dd>
+
+
+<p>
+The Forth code is compiled on the host (i.e., the desktop PC).  The
+Tcl program <code>riscy.tcl</code> serves two purposes, controlled by options on
+the command line.
+</p>
+<ul>
+<li>
+generate an image that can be burned into the ARM's flash
+
+<p>
+It creates two files, e.g., <code>kernel-lpc2106.bin</code> (to be burned into
+the flash) and <code>kernel-lpc2106.dictionary</code> (to be used by <code>riscy.tcl</code>
+when running interactively).
+</p>
+<p>
+This can be thought of as a batch mode.  It combines the
+primitives with some essential high-level Forth code (plus any
+additonal high-level Forth code you wish to include).
+</p>
+<p>
+The primitives are created by assembling the file <code>riscy.asm</code>
+(actually the makefile takes care of this by assembling an
+automatically-generated board-specific variant of <code>riscy.asm</code> such
+as <code>riscy-lpc2106.asm</code>).
+</p>
+<p>
+The high-level Forth code includes some essentials required to
+make a kernel that can extend itself.  It can also include any
+additional high-level Forth code, perhaps your entire
+application, or perhaps just the well tested parts of your
+application.
+</p>
+<p>
+For example, the file <code>kernel.fth</code> contains the essential code
+needed for the kernel.  Its block 1 is its load block.  If your
+application is in the same file and you have edited block 1 to
+also load your application, you could generate a kernel image
+with
+</p>
+<pre class="example">
+./riscy.tcl -flash 1
+</pre>
+
+<p>
+but you would ordinarily just run <code>make</code> and let <code>make</code> generate
+the kernel image automatically.  See <code>makefile</code>, <code>riscy.tcl</code>, and
+<code>riscy.fth</code> for more details.
+</p>
+</li>
+<li>
+run interactively 
+
+<p>
+This provides the smart terminal to let you interact with your
+ARM board.  When you start it, you specify the image on the
+command line.  For example, if you created a kernel image named
+<code>kernel-lpc2106</code> (consisting of the two files <code>kernel-lpc2106.bin</code>
+and <code>kernel-lpc2106.dictionary</code>), and you are using the first
+serial port, you could start it with
+</p>
+<p>
+<code>./riscy.tcl -image kernel-lpc2106  -port /dev/ttyS0</code>
+</p>
+</li>
+</ul>
+</dd>
+<dt>Give me a quick overview of Riscy Pygness</dt><dd>
+
+
+<p>
+The Riscy Pygness system involves software on the <b>host</b> and on
+the <b>target</b>:
+</p>
+<dl>
+<dt>target</dt><dd>
+
+<p>
+A Forth image that runs on a <b>target</b> board (with an ARM CPU).
+</p>
+<p>
+The image can be thought of as having 3 pieces:
+</p><ul>
+<li>
+primitives written in ARM assembly language in flash,
+</li>
+<li>
+high-level Forth in flash,
+</li>
+<li>
+high-level Forth in RAM.
+
+</li>
+</ul>
+</dd>
+<dt>host</dt><dd>
+
+<p>
+An assembler and compiler and smart terminal that run
+on the <b>host</b> (i.e., your desktop PC).
+</p>
+<p>
+The assembler and compiler let you generate new Forth images
+for the target's flash and the compiler lets you extend the
+target's Forth dictionary by defining new words
+interactively into RAM.
+</p>
+<p>
+The smart terminal provides the communication link over a
+serial port through which you interact with the target,
+exercising words in the target's dictionary and/or defining
+new words.
+</p>
+</dd>
+</dl>
+</dd>
+<dt>Do I need to install the entire GNU Tool Chain?</dt><dd>
+
+
+<p>
+No, but you must install at least <b>binutils</b> for the assembler and
+related utility programs if you wish to make changes to the
+primitives (in <code>riscy.asm</code>).
+</p>
+<p>
+You do not need to install GCC.
+</p>
+</dd>
+<dt>Do I need to install Tcl on the host?</dt><dd>
+
+
+<p>
+Yes.  You need Tcl but not necessarily Tk.  The easiest way is
+download a version of Tclkit and (as root) put it in the directory
+<code>/usr/local/bin/</code>.  Then soft link it to the name <code>tclkit</code>.  The
+top line of <code>riscy.tcl</code> expects it in <b>that</b> location with <b>that</b>
+name.  Otherwise, edit the top line of <code>riscy.tcl</code> accordingly.
+</p>
+</dd>
+<dt>Are the new high-level Forth words stored in on-chip Flash?</dt><dd>
+
+
+<p>
+As you work interactively, new words that you define are stored in
+RAM.  If you reset your target board or power it off, the
+definitions vanish from the target's RAM.  So, rather than typing
+lots of definitions interactively, you should type them into a file
+and then load them from the file.  For example, <code>riscy.tcl</code> maps
+(allocates) the block range 2000 through 2999 to the file <code>s2.fth</code>.
+You could use this file for your application.  Set up block 2001 as
+your load block.  Put some code you wish to load into RAM into
+block 2008.  Then, say <code>2008 LOAD</code> to load block 2008.  (Eventually,
+you would edit block 1 in <code>kernel.fth</code> so it would load your
+application when it creates a kernel image.)
+</p>
+<p>
+As you finish testing parts of your application, from time to time
+you will want to generate a new Forth image for the flash memory
+that will contain your new/tested words.
+</p>
+</dd>
+<dt>Once the compiler combines the primitives with the high-level Forth words and produces a kernel image that you burn into the Flash, can you extend the system with additional words interactively? </dt><dd>
+
+
+<p>
+Yes!  When you are in the interpreter and type a colon at the
+beginning of a line, the interpreter knows to compile that line
+(thus updating the target image on the host) and then to send that
+target image extension to the target for it to program into its
+RAM.  Also, you can compile a <b>region</b> (some text that you have
+highlighted) in your editor on the host (if you are running Emacs)
+and have that region compiled and sent to the target with an Emacs
+keystroke (I suspect that this is a feature planned for the
+future).
+</p>
+</dd>
+<dt>What files need to be modified to port Riscy to new hardware &hellip; i.e., if I have an LPC2124 based system?</dt><dd>
+
+
+<p>
+See <code>makefile</code> and the various <code>*.asm</code> files to see how
+customizations are done for different ARM variants.
+</p>
+<p>
+First, study the manual for the LPC2124 to see how closely the
+configuration addresses (for timers, I/O ports, interrupts, etc.)
+match those of the LPC210x chips, etc.  As long as the symbols do
+not conflict, just extend <code>equates-lpc2xxx.asm</code> to include any new
+symbols needed.  Then create a new file named something like
+<code>custom-lpc2124.asm</code> and <code>olimex-lpc2124-equates.asm</code> with the CPU
+or board-specific information such as what pin is connected to the
+LED.  Start by copying one of the other <code>custom-*.asm</code> files.  The
+idea is to localize chip-specific items in these files that
+<code>riscy.asm</code> includes.
+</p>
+<p>
+The main source code files are <code>riscy.asm</code> (for primitives) and
+<code>kernel.fth</code> (for essential high-level Forth code).  CPU-specific
+items go in a CPU-specific assembly file (see <code>custom-lpc2106.asm</code>,
+<code>custom-lpc23xx.asm</code>, etc.).  Here are the items that come to mind
+(but let's extend them as we run across others):
+</p>
+<ul>
+<li>
+Primitives
+
+<ul>
+<li>
+Part of the initialization sets the serial port baud rate to
+38,400 bps, based on the clock speed (especially the PCLK
+speed).  This will need to be adjusted depending on the desired
+host's serial port speed and on the PCLK speed of your
+hardware.  Some CPUs in the LPC series allow fractional
+baudrate divisors.  See the file <code>custom-lpc23xx.asm</code> for an
+example.
+
+</li>
+</ul>
+</li>
+<li>
+High-level 
+
+<ul>
+<li>
+The timing delay for MS might need to be adjusted to suit the
+hardware speed.
+
+</li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+
+</div>
+
+<div id="outline-container-11.6" class="outline-3">
+<h3 id="sec-11.6">11.6 JTAG and OpenOCD </h3>
+<div id="text-11.6">
+
+
+<p>
+ARM chips typically have a JTAG interface.  To use it, you need a JTAG
+cable.  <a href="http:://olimex.com/">Olimex</a> and <a href="http://www.sparkfun.com/">SparkFun</a> sell several inexpensive JTAG cables that
+work fine.  I started with a parallel port cable but now I use the
+Olimex ARM-USB-TINY JTAG cable.
+</p>
+<p>
+You need some software also, in the form of <a href="http://openocd.berlios.de/web/">OpenOCD</a>.  You can use
+OpenOCD in two ways.  In either case, you first start it running in a
+terminal. 
+</p>
+<ul>
+<li>
+connect to it via telnet from another terminal and issue OpenOCD
+commands 
+
+</li>
+<li>
+connect to it via GDB (perhaps from within Emacs) and issue GDB
+commands
+
+</li>
+</ul>
+
+</div>
+
+<div id="outline-container-11.6.1" class="outline-4">
+<h4 id="sec-11.6.1">11.6.1 Starting OpenOCD </h4>
+<div id="text-11.6.1">
+
+
+<p>
+Fortunately, OpenOCD comes with a good user manual.  OpenOCD comes
+with some prewritten configuration files.  If configuration files for
+your board and/or ARM variant are present (in
+<code>/usr/share/openocd/scripts/</code> on an Ubuntu system), running it can be as
+simple as specifying one config file for your JTAG cable and another
+for your board, e.g., if you use the same JTAG cable I use and an
+Olimex LPH-H2148 board, you would start OpenOCD in a terminal with
+this command:
+</p>
+<pre class="example">
+$ openocd -s /usr/share/openocd/scripts -f interface/olimex-jtag-tiny.cfg -f board/olimex_lpc_h2148.cfg
+</pre>
+
+<p>
+OpenOCD version 0.2.0-in-development (2009-06-30-01:11) does not come
+with configuration files for the Olimex LPC-P2106 board or chip, so I
+created a target config file named <code>lpc2106.cfg</code> based on a similar
+target config file.  I hope to post it to the OpenOCD site, so perhaps
+it will be included in a future OpenOCD version.  Meanwhile, you can
+use it directly from within your working directory.  The idea is that
+its path would eventually be
+<code>/usr/share/openocd/scripts/target/lpc2106.cfg</code>.
+</p>
+<p>
+Rather than typing a long command line such as
+</p>
+<pre class="example">
+$ openocd -f /usr/share/openocd/scripts/interface/olimex-jtag-tiny.cfg -f lpc2106.cfg
+</pre>
+
+<p>
+I created a config file named <code>openocd2106.cfg</code> that goes in my working
+directory.  The file, at a minimum, has these contents:
+</p>
+<pre class="example">
+# This file is for use with the Olimex LPC2106 board.  
+# It is named openocd2106.cfg.  Run it this way:
+#    $ openocd -f openocd2106.cfg
+
+# This is the JTAG connector I use
+source [find interface/olimex-jtag-tiny.cfg]
+
+# The following file, for now, is in my current directory
+source [find lpc2106.cfg]
+</pre>
+
+<p>
+Once you run <code>openocd -f openocd2106.cfg</code> in a terminal, OpenOCD is
+running as a daemon.  To kill it, type <code>C-c</code> in the terminal.
+</p>
+<p>
+Sometimes I need to start it several times before it comes up without
+any error messages.  (Start it, see errors, kill it.  Start it, see
+errors, kill it. Start it, no errors, good, leave it running.)  You
+need to have the JTAG cable connected, and the DEBUG jumper (labeled
+"DEBUG" on the LPC-P2106 board) shorted.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.6.2" class="outline-4">
+<h4 id="sec-11.6.2">11.6.2 Running OpenOCD </h4>
+<div id="text-11.6.2">
+
+
+<p>
+After starting OpenOCD running as a daemon as described in the
+previous section, you can open a new terminal and connect via telnet;
+</p>
+<pre class="example">
+$ telnet localhost 4444
+</pre>
+
+<p>
+See the OpenOCD manual for the commands you can use.  Following are
+some examples.
+</p>
+<ul>
+<li id="sec-11.6.2.1">Miscellaneous <br/>
+
+
+
+
+<pre class="example">
+  &gt; poll
+  &gt; reg
+  &gt; reg r0
+  &gt; reg pc
+  &gt; reg r0 0x12345678
+  &gt; reg r0
+  &gt; halt
+  &gt; resume
+  &gt; step [address]
+  &gt; step 0
+  &gt; reset
+  &gt; reset run
+  &gt; reset halt
+  &gt; (for memory display of word, half-word, or byte, use 'mdw addr [count]' etc.)
+  &gt; mdw 0 8
+  &gt; mdb 0 32
+  &gt; (for writing, use 'mww addr value', 'mwh addr value', 'mwb addr value')
+  &gt; mww 0x40000000 0x12345678
+  &gt; mww 0x40000004 0x55553333
+  &gt; mdw 0x40000000 4
+  &gt; armv4_5 disassemble 0 20
+  &gt; arm7_9 fast_memory_access enable
+  &gt; flash banks
+  &gt; flash info
+</pre>
+
+
+
+
+
+</li>
+<li id="sec-11.6.2.2">Dump the flash contents <br/>
+
+<p>
+Here is an example to verify the contents of the flash.  I (thought I)
+had programmed the flash with the file <code>kernel-lpc2106.bin</code>, a 3584-byte
+file at the time.  So, I wanted to dump the first 3584 bytes of the
+flash to another file so I could compare the two files.
+</p>
+<p>
+I dumped the flash to a file named <code>dump1.bin</code>, via OpenOCD with
+</p>
+<pre class="example">
+$ dump_image dump1.bin 0 3584
+</pre>
+
+<p>
+Then I compared the original file <code>kernel-lpc2106.bin</code> with <code>dump1.bin</code>
+with the <code>hexdiff</code> program, i.e.,
+</p>
+<pre class="example">
+ $ hexdiff kernel-lpc2106.bin dump1.bin
+</pre>
+
+<p>
+Note, if the only difference is the 4 bytes at address 0x00000018,
+that is not necessarily a problem.  Those 4 bytes hold a checksum (the
+32-bit two's complement of the sum of the other 7 vectors) used by the
+LPC2106 bootloader.  So, if you add all 8 vectors, you should get a
+number whose rightmost 32 bits are zeroes.  <code>riscy.tcl</code> calculates this
+checksum automatically when it creates a kernel image.
+</p>
+
+</li>
+<li id="sec-11.6.2.3">Erase flash sector 0 <br/>
+
+<pre class="example">
+ flash erase_check 0 
+ flash protect_check 0
+ flash info 0
+ flash protect 0 0 0 off    # if sector 0 had been protected
+ flash protect_check 0
+ flash info 0
+ flash erase_sector 0 0 0
+</pre>
+
+<p>
+The first command lists the sectors of bank 0 to see which are already
+erased.  The second erases, in bank zero, all the sectors from number
+zero through number zero.  I.e., it erases sector 0.
+</p>
+<p>
+Note, on the LPC-P2103 (and probably on the LPC-P2106) it never shows
+the protection turned off, yet that did not prevent me erasing or
+reprogramming sectors.
+</p>
+</li>
+<li id="sec-11.6.2.4">Reprogram the flash <br/>
+
+<pre class="example">
+flash write_bank 0 kernel-lpc2106.bin 0
+</pre>
+
+<p>
+This reflashes the chip with the Riscy Pygness kernel into bank 0
+starting at offset 0.
+</p>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-11.7" class="outline-3">
+<h3 id="sec-11.7">11.7 GDB </h3>
+<div id="text-11.7">
+
+
+<p>
+For tracing through tricky assembly language routines, you might find
+GDB (the GNU Debugger) useful.  It can be run various ways.  I often
+use it from within Emacs.  
+</p>
+<p>
+To use GDB with a JTAG connector, first start OpenOCD as described
+in the <a href="#sec-11.6">JTAG and OpenOCD</a> section.  Then instead of connecting to
+OpenOCD via telnet, connect to it via GDB.
+</p>
+<p>
+Before running GDB for the first time, take a look at the included
+<code>.gdbinit</code> file.  You may need to edit it for your system.  For example,
+it contains a line to change to my working directory and to open a
+file such as <code>riscy-lpc2103.elf</code>.  Be sure to change those lines to <b>your</b>
+working directory and to the <code>*.elf</code> file that you will be debugging.
+</p>
+<p>
+Then, in Emacs, start GDB with <code>M-x gdb</code>.  It will prompt you for the
+GDB command to use.  I use 
+</p>
+<pre class="example">
+arm-elf-gdb --annotate=3
+</pre>
+
+<p>
+A common error is to run <code>gdb</code> (which runs the GDB for your desktop CPU)
+rather than running <code>arm-elf-gdb</code> (which runs the cross-target GDB for
+your ARM CPU).
+</p>
+<p>
+In the Emacs <code>*gud*</code> buffer, you can issue GDB commands directly or you
+can issue OpenOCD commands by preceding the OpenOCD command with the
+GDB command <code>mon</code>.  E.e., to run the OpenOCD <code>poll</code> command from within
+the <code>*gdb*</code> buffer, type <code>mon poll</code>. 
+</p>
+<p>
+OpenOCD (and thus GDB) has a limit of two hardware breakpoints.  So,
+when debugging in flash, you need to be careful not to set more than 2
+breakpoints at a time.
+</p>
+
+</div>
+
+<div id="outline-container-11.7.1" class="outline-4">
+<h4 id="sec-11.7.1">11.7.1 Example </h4>
+<div id="text-11.7.1">
+
+
+<p>
+Here's an example of using GDB to step through the Forth word <code>C@</code> on
+the Olimex LPC-P2103 board, which uses the NXP LPC2103 ARM chip.
+</p>
+<p>
+First start OpenOCD as described earlier.  I open a terminal, <code>cd</code> to my
+working directory, and start OpenOCD with
+</p>
+<p>
+<code>$ openocd -f openocd2103.cfg</code>
+</p>
+<p>
+If it reports errors, kill it (with <code>C-c</code>) then try again, until it
+comes up with no errors.  I have sometimes needed to alter the
+<code>jtag_khz xx</code> setting to slow down the clock, e.g., <code>jtag_khz 32</code>.  Once
+it starts sucessfully, you can ignore this terminal.
+</p>
+<p>
+Then start up Emacs in another terminal (or wherever), if not already
+running.  Edit the <code>.gdbinit</code> file in the working directory to be sure
+GDB will <code>cd</code> to your correct working directory and to open the correct
+<code>*.elf</code> file &ndash; look for a line like
+</p>
+<p>
+<code>file ~/riscy/lpc2103/riscy-lpc2103.elf</code>
+</p>
+<p>
+Then, start GDB with <code>M-x gdb</code> and specify 
+</p>
+<pre class="example">
+arm-elf-gdb --annotate=3
+</pre>
+
+<p>
+as the actual GDB command to run.
+</p>
+<p>
+At this point, we have one terminal running OpenOCD as a daemon in the
+background.  This terminal does not need any further attention.  Then,
+we have Emacs running (in a terminal or in its own window) with GDB
+running in the Emacs <code>*gud*</code> buffer, where we will interact directly
+with GDB.
+</p>
+<p>
+We then start another terminal in which to run Riscy Pygness.  This
+terminal may actually be a shell running inside another instance of
+Emacs (to give us convenient command recall and command completion) or
+it could be your usual terminal program (such as <code>gnome-terminal</code>).  At
+some point, we start Riscy Pygness in this terminal, with
+</p>
+<p>
+<code>$ ./riscy.tcl -image kernel-lpc2103 -port /dev/ttyS0</code>
+</p>
+<p>
+Since we wish to step through the code for <code>C@</code>, we need to find its
+address and tell GDB to set a breakpoint there.
+</p>
+<p>
+There are two ways to find this address.  One is from within Forth by
+running 
+</p><pre class="example">
+' C@ .H
+</pre>
+(which prints the address in hexadecimal).  The other
+is by consulting the linker listing from when the Forth kernel was
+generated.  In this example, that file is named <code>riscy-lpc2103.lnkt</code>.
+We won't find <code>C@</code> listed under "C@" here (although we <b>would</b> find <code>DUP</code>
+listed under "DUP").  The reason is that "C@" is not a valid label
+name to the assembler.  If we search for "C@" in <code>riscy.asm</code>, we will
+discover the label name used for the Forth word <code>C@ is</code> "Cfetch".
+(Thus, we would search for "Cfetch" when looking in the linker file.)
+In this example, its address is 0x0374.  Since our <code>.gdbinit</code> file sets
+the radix to hexadecimal, within the <code>*gud*</code> buffer, we can specify that
+address as <code>374</code>.
+
+<p>
+Note, since we told Emacs to open the file <code>riscy-lpc2103.elf</code> it knows
+to find the source code in the file named <code>riscy-lpc2103.s</code> (which was
+derived by preprocessing the file <code>riscy-lpc2103.asm</code> which was derived
+from <code>riscy.asm</code> by including the proper include files for the LPC2103
+chip).  As you jump and step within the <code>*gud*</code> buffer, a marker should
+move around accordingly in the <code>riscy-lpc2103.s</code> buffer.
+</p>
+<p>
+In the Emacs <code>*gud*</code> buffer, set the breakpoint:
+</p>
+<pre class="example">
+ mon poll        # make sure the ARM is halted
+ mon reset halt  # in case above showed it was not halted
+ i b             # show current breakpoints
+ del 2           # delete any other than the one at _start (at 0x20)
+ i b             # confirm only the one at 0x20 is set
+ b Cfetch        # set our second breakpoint at the start of the C@ primitive 
+ j _start        # jump to the start of the program
+ c               # "continue" to start the program running so our Forth buffer can run
+</pre>
+
+<p>
+Then, in the Forth buffer, type some command involving <code>C@</code> to make it
+hit the breakpoint, if it has not already stopped at that breakpoint,
+such as <code>$4444 C@</code>.
+</p>
+<p>
+Then, back in the Emacs <code>*gud*</code> buffer, examine registers, single step,
+etc.  See the GDB users manual for details.
+</p>
+<pre class="example">
+ p $r0           # display register zero (which holds the top-of-stack)
+ s               # single step
+ ...             
+ i reg           # show values (and names) of the CPU registers
+ p $cpsr         # display the condition code register
+                 #   the left 4 bits (NZCV) are often the most interesting
+                 #     bit 31  N
+                 #     bit 30  Z
+                 #     bit 29  C
+                 #     bit 28  V
+                 # e.g., 0x200000d3 means the carry bit is set
+ display $r1
+ display $r2
+ display $cpsr
+ display $r0     # set up the 4 values we wish to see after every step command
+</pre>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-11.8" class="outline-3">
+<h3 id="sec-11.8">11.8 Emacs </h3>
+<div id="text-11.8">
+
+
+
+</div>
+
+<div id="outline-container-11.8.1" class="outline-4">
+<h4 id="sec-11.8.1">11.8.1 Learning Emacs </h4>
+<div id="text-11.8.1">
+
+
+<p>
+Emacs has extensive built-in help.  If you are not yet familiar with
+Emacs, start it up and work through its built-in tutorial.  Start the
+tutorial by pressing <code>C-h t</code> (i.e., press control h then press t) or by
+clicking on the **Help** menu and choosing **Emacs Tutorial**.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.8.2" class="outline-4">
+<h4 id="sec-11.8.2">11.8.2 Emacs mode for Riscy Pygness </h4>
+<div id="text-11.8.2">
+
+
+<p>
+The file <code>forthblocks.el</code> (in the distribution) is an Emacs mode for
+editing Forth.  Put that file into your home directory.
+</p>
+<p>
+Put the following into your <code>~/.emacs</code> file so the forthblocks mode will
+be run automatically when you open a file whose name ends in <code>.fth</code>.
+</p>
+<pre class="example">
+(setq auto-mode-alist
+      (cons '("\\.fth" . forthblocks-mode) auto-mode-alist))
+(autoload 'forthblocks-mode "~/forthblocks.el" "Forth blocks editing mode." t)
+</pre>
+
+<p>
+If you don't yet have a <code>.emacs</code> file, copy the example file to your
+home directory.  It already contains the above lines.
+</p>
+<pre class="example">
+$ cp ~/riscy/.emacs-example ~/.emacs
+$ cp ~/riscy/forthblocks.el ~/
+</pre>
+
+<p>
+Read the file <code>forthblocks.el</code> for details.  The quick summary is that
+it works with plain text files (not traditional Forth 1024-byte
+blocks) but simulates blocks by recognizing comments such as
+</p>
+<pre class="example">
+( block 1   ------------------  load block)
+( shadow 1 )
+( block 2  miscellaneous)
+( shadow 2 miscellaneous )
+</pre>
+
+<p>
+as block markers.  This gives you "logical" blocks which should be
+kept short, but are variable length.  For me, this gives a pretty good
+compromise for source code: modular Forth blocks and the ability to
+use my favorite text editor.
+</p>
+<p>
+See <code>forthblocks.el</code> for the keystrokes that move from block to block,
+that toggle between a block and its associated shadow block, that
+renumber the blocks, etc.
+</p>
+<p>
+If you really don't like even <b>this</b> form of blocks, then just put a
+single block comment at the top of the file, such as
+</p>
+<pre class="example">
+( block 2000   everything in this file is in block number 2000)
+</pre>
+
+<p>
+then everything in the file will be in a single (gigantic) block.  To
+load the entire file, say 
+</p>
+<pre class="example">
+2000 LOAD
+</pre>
+
+<p>
+See also <code>riscy.tcl</code> for how to map block ranges to file names.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-11.9" class="outline-3">
+<h3 id="sec-11.9">11.9 Antecedents </h3>
+<div id="text-11.9">
+
+
+<p>
+The current version of Riscy Pygness was derived from various previous
+versions of Riscy Pygness and from <a href="http://pygmy.utoh.org/pygmyforth.html">Pygmy Forth for the PC</a> (a 16-bit
+DOS Forth), which itself was derived from Charles Moore's cmFORTH.
+</p>
+<p>
+However, Riscy Pygness is quite different from Pygmy Forth for the PC,
+not just because it is a 32-bit Forth for an entirely different
+processor, but also because it borrows a few ideas from Charles
+Moore's <a href="#sec-11.10">colorForth</a>.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.10" class="outline-3">
+<h3 id="sec-11.10">11.10 colorForth </h3>
+<div id="text-11.10">
+
+
+<p>
+Chuck Moore's <a href="http://www.colorforth.com/cf.htm">colorForth</a> is a very interesting system.  It has
+inspired some of the features of Riscy Pygness.
+</p>
+<dl>
+<dt>Use of color to "tag" words in the source</dt><dd>
+
+
+<p>
+Rather than tagging words in the source with color, Riscy Pygness
+tags words with tags, so to speak.
+</p>
+<p>
+Specifically,
+</p>
+<ul>
+<li>
+A double quote followed by a space tags the following text up to
+an ending double quote as a string,
+
+</li>
+<li>
+A colon followed by a space tags the following word as a label,
+
+</li>
+<li>
+Literal numbers 
+
+<ul>
+<li>
+A dollar sign at the beginning of a number tags it as a
+hexadecimal number (e.g., <code>$03F8</code>),
+
+</li>
+<li>
+A single quote mark followed by a letter tags it as as the
+ASCII value of the character (e.g., 'A is the number 65),
+
+</li>
+<li>
+A word that is a valid decimal number but is not in the table
+of label names does not need a tag.
+
+</li>
+<li>
+The word <code>VARIABLE</code> tags the following word as a variable. 
+
+</li>
+</ul>
+</li>
+</ul>
+
+<p>So, other than the verbosity of using symbols rather than color for
+tags, this is similar to both colorForth and classic Forth.
+</p>
+</dd>
+<dt>Just two tasks</dt><dd>
+
+
+<p>
+colorForth appears to have exactly two tasks, a foreground task and
+a background task.
+</p>
+<p>
+Riscy Pygness also has a fixed number number of tasks (three in the
+current version, but this is adjustable).
+</p>
+</dd>
+<dt>Some unusual simplifications</dt><dd>
+
+
+<p>
+In colorForth, <code>OR</code> means exclusive OR and there is no inclusive OR
+</p>
+<p>
+Riscy Pygness retains both the usual <code>OR</code> and <code>XOR</code>.
+</p>
+</dd>
+<dt>Multiple entry points and exit points and optimized tail recursion</dt><dd>
+
+
+<p>
+Yes, Riscy Pygness does this also. 
+</p>
+<ul>
+<li>
+Riscy Pygness allows multiple labels per word.  (This makes Forth
+word names virtually identical to assembler labels.)
+
+</li>
+<li>
+It allows multiple exits from a word (using <code>;</code> to represent the
+exit).
+
+</li>
+<li>
+When encountering a semicolon, if possible, it changes the
+preceding word from a call to a jump and omits compiling an
+actual <code>EXIT</code>.  In the source code of the compiler, you will see
+the definition of <code>cut</code> (which I believe was written as <code>//</code> in
+colorForth and/or some of Chuck's other Forths), which is used to
+mark special cases where the use of a semicolon must <b>not</b> cause
+the preceding subword to be changed to a jump (i.e., where an
+actual <code>EXIT</code> must be compiled), such as after a <code>THEN</code>.
+
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+
+</div>
+
+<div id="outline-container-11.11" class="outline-3">
+<h3 id="sec-11.11">11.11 GNU Toolchain </h3>
+<div id="text-11.11">
+
+
+<p>
+If you installed the bundle of tools from the Riscy Pygness website
+(<a href="http://pygmy.utoh.org/riscy/arm-toolchain.tar.bz2">http://pygmy.utoh.org/riscy/arm-toolchain.tar.bz2</a>), then you can
+ignore this section.
+</p>
+
+</div>
+
+<div id="outline-container-11.11.1" class="outline-4">
+<h4 id="sec-11.11.1">11.11.1 Installing the GNU Toolchain </h4>
+<div id="text-11.11.1">
+
+
+<p>
+In order to create a new kernel, you need to have at least parts of
+the GNU Toolchain for the ARM installed.  In particular, you need the
+assembler, linker, and some object file manipulating utilities &ndash; all
+of which are bundled together in the <code>binutils</code> package.
+</p>
+<p>
+Your two main choices are to install a pre-compiled GNU tool chain or
+to compile the <code>binutils</code> software yourself.
+</p>
+<p>
+Binutils is very easy to compile.  That is the only part of the tool
+chain you really need in order to work with Riscy Pygness.  You might
+also wish to compile the GNU debugger.  You do not need the C
+compiler for the ARM.
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-11.11.2" class="outline-4">
+<h4 id="sec-11.11.2">11.11.2 Compiling the Tool Chain </h4>
+<div id="text-11.11.2">
+
+
+<p>
+If compiling from source, you might find the Lewin Edwards book
+<span style="text-decoration:underline;">Embedded System Design on a Shoestring</span> helpful, although it isn't
+needed if you are compiling just <code>binutils</code>. 
+</p>
+<p>
+Here is an example of how to compile <code>binutils</code>.
+</p>
+<p>
+First, download the source from <a href="http://ftp.gnu.org/gnu/binutils/">http://ftp.gnu.org/gnu/binutils/</a>,
+choosing one of the more recent versions, such as
+<a href="http://ftp.gnu.org/gnu/binutils/binutils-2.18.tar.bz2">http://ftp.gnu.org/gnu/binutils/binutils-2.18.tar.bz2</a>.
+</p>
+<p>
+In general, for each package, I download the <code>*.tar.gz</code> or <code>*.tgz</code>  source
+code package and uncompress it in <code>/tmp</code>, e.g.,
+</p>
+<pre class="example">
+# cd /tmp
+# tar -xzvf binutils-2.15.90.0.1.1.tgz
+</pre>
+
+<p>
+then create a build directory at the same level, e.g.,
+</p>
+<pre class="example">
+# cd /tmp
+# mkdir binutils-make
+</pre>
+
+<p>
+then configure, compile, and install the package, with something like
+the following
+</p>
+<pre class="example">
+# cd binutils-make
+# ../binutils-2.15.90.0.1.1/configure --target=arm-elf --prefix=/usr/local/arm
+# make
+# make install
+</pre>
+
+<p>
+Of course, adjust the file names to suit the actual version you are
+compiling and installing.
+</p>
+<p>
+Note, you must be root, at least for the install step.  See the
+<a href="#sec-11.1.6">section on becoming root</a>.
+</p>
+<p>
+Then, if you want to compile <code>gdb</code> or <code>insight</code> (<code>insight</code> contains <code>gdb</code>, so
+no need to compile both of them), do it generally as above but with a
+configure command such as
+</p>
+<pre class="example">
+# ../insight-6.1/configure --target=arm-elf --prefix=/usr/local/arm/
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-11.11.3" class="outline-4">
+<h4 id="sec-11.11.3">11.11.3 Notes about generating the bundle of tools </h4>
+<div id="text-11.11.3">
+
+
+<p>
+Here are some notes about generating the bundle of tools
+(<a href="http://pygmy.utoh.org/riscy/arm-toolchain.tar.bz2">http://pygmy.utoh.org/riscy/arm-toolchain.tar.bz2</a>).  I used Ubuntu
+10.04.1 which comes with <code>make</code> and <code>gcc</code> but we need to install the
+<code>texinfo</code> and <code>libncurses-dev</code> packages for the compiles to succeed.
+</p>
+<ul>
+<li id="sec-11.11.3.1">Compiling binutils <br/>
+
+<p>
+I downloaded the source from <a href="http://ftp.gnu.org/gnu/binutils/">http://ftp.gnu.org/gnu/binutils/</a>.
+</p>
+<pre class="example">
+# apt-get install texinfo
+# cd /tmp
+# mkdir binutils-build
+# cd binutils-build
+# make /usr/local/src/binutils-2.20.1/configure --target=arm-elf --prefix=/usr/local/arm
+# make
+# make install
+</pre>
+
+</li>
+<li id="sec-11.11.3.2">Compiling GDB <br/>
+
+<p>
+The most recent version appears to be version 7.2 of 2 Sept 2010.  If
+we want Insight, then we get an older version of GDB (6.8).  I chose
+to build just the newer GDB and forget about Insight.  If we run GDB,
+we will do so from within Emacs.
+</p>
+<p>
+I downloaded the source from <a href="http://ftp.gnu.org/gnu/gdb/gdb-7.2.tar.bz2">http://ftp.gnu.org/gnu/gdb/gdb-7.2.tar.bz2</a>.
+</p>
+<pre class="example">
+# apt-get install libncurses-dev
+# cd /usr/local/src
+# gpg --verify gdb-7.2.tar.bz2.sig gdb-7.2.tar.bz2
+# tar -xjf gdb-7.2.tar.bz2
+# cd /tmp
+# mkdir gdb-build
+# cd gdb-build
+# /usr/local/src/gdb-7.2/configure --target=arm-elf --prefix=/usr/local/arm
+# make
+# make install
+</pre>
+
+</li>
+<li id="sec-11.11.3.3">Compiling lpc21isp <br/>
+
+<p>
+I downloaded lpc21isp-1.79.tar.gz into <code>/usr/local/src/</code> and then
+compiled it and linked to a shorter name.  The process was
+approximately the following (I don't think it needed a configure or
+install step, but I might have misremembered).
+</p>
+<pre class="example">
+# cd /usr/local/src/
+# tar -xzvf lpc21isp-1.79.tar.gz
+# cd lpc21i*
+# make
+# cp lpc21isp-1.79 /usr/local/bin
+# ln -s /usr/local/bin/lpc21isp-1.79 /usr/local/bin/lpc21isp
+</pre>
+
+<p>
+See also the notes here at <a href="#sec-9.4.2">*Compiling lpc21isp</a>.
+</p>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-11.12" class="outline-3">
+<h3 id="sec-11.12">11.12 Makefile automatic variables </h3>
+<div id="text-11.12">
+
+
+<p>
+This is a quick reference to the meaning of some automatic variables
+used in a makefile.
+</p>
+<p>
+Given a rule such as <code>%.s: %.asm</code> which says how to make
+an assembly file suitable for passing to the GNU assembler 
+(e.g., <code>led1.s</code>) from a preprocessable assembly source file 
+(e.g., <code>led1.asm</code>),
+</p>
+<dl>
+<dt><code>$*</code></dt><dd>
+the stem (e.g., <code>led1</code>)
+</dd>
+<dt><code>$@</code></dt><dd>
+the target file (e.g., <code>led1.o</code>)
+</dd>
+<dt><code>$&lt;</code></dt><dd>
+the source file (e.g., <code>led1.s</code>), i.e., the first prerequisite
+</dd>
+<dt><code>$^</code></dt><dd>
+the list of all the prerequisites
+
+</dd>
+</dl>
+</div>
+
+</div>
+
+<div id="outline-container-11.13" class="outline-3">
+<h3 id="sec-11.13">11.13 Troubleshooting </h3>
+<div id="text-11.13">
+
+
+
+</div>
+
+<div id="outline-container-11.13.1" class="outline-4">
+<h4 id="sec-11.13.1">11.13.1 Bad flash </h4>
+<div id="text-11.13.1">
+
+
+<p>
+One symptom might be that things suddenly make no sense.
+</p>
+<p>
+You've been working away with Riscy Pygness and your target ARM board,
+then you make a change, reflash the target, and nothing seems to work
+quite right.  What could it be?
+</p>
+<p>
+I'm not even going to mention the possibility that you forgot to turn
+on the power or perhaps left the boot jumper shorted after flashing.
+</p>
+<p>
+One possibility is that the target's flash did not actually get
+programmed correctly.  I believe I had this happen when flashing with
+version 1.48 of the <code>lpc21isp</code>, even though I used the <code>-verify</code> option.
+<code>lpc21isp</code> should have complained, but, no, it just silently pretended
+the flashing had succeeded.
+</p>
+<p>
+To verify the flash was not programmed correctly, I used the JTAG
+interface and OpenOCD.  First, I was single stepping through the code
+and the wrong value for the flash token table appeared to be loaded.
+That was my first clue.
+</p>
+<p>
+Then, I used OpenOCD to dump the actual contents of the flash to a
+file and then compared that with the original <code>kernel-lpc2106.bin</code>,
+using a program named <code>hexdiff</code>.  The two files should have been
+identical (other than perhaps the checksum vector at address
+0x00000018), but they were not.
+</p>
+<p>
+To fix it, I then used OpenOCD to erase the flash and then used
+OpenOCD to reprogram the flash.  Then things worked properly once
+more.
+</p>
+<p>
+See the <a href="#sec-11.6">JTAG</a> section for details on how to dump, erase, and reprogram
+the flash.
+</p>
+<p>
+I upgraded to version 1.79 of <code>lpc21isp</code> and tried again with the same
+board.  This version, fortunately, actually verifies the flash.  It
+warned me that it couldn't program a sector, rather than failing
+silently.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.13.2" class="outline-4">
+<h4 id="sec-11.13.2">11.13.2 Blinking LEDs </h4>
+<div id="text-11.13.2">
+
+
+<p>
+See the label <code>blink:</code> in <code>riscy.asm</code>.  This routine blinks an LED on the
+target board (if the board and the <code>custom-*.asm</code> file support this).
+Near the start of the routine the count is set.  You can change how
+many times the LED blinks.  If, when you reset the board, you see the
+LED blink the appropriate number of times, then you know the program
+has progressed to that point.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.13.3" class="outline-4">
+<h4 id="sec-11.13.3">11.13.3 Serial port problems </h4>
+<div id="text-11.13.3">
+
+
+<p>
+As distributed, Riscy Pygness is set to use a serial port speed of
+38,400 bps.  This is a conservative value and you probably could
+increase it to 115,200 bps.  If you change it, be sure to change it
+<b>everywhere</b>: <code>makefile</code>, <code>riscy.tcl</code>, and <code>custom-*.asm</code>.
+</p>
+<p>
+See the label <code>greet:</code> in <code>riscy.asm</code>.  Prior to blinking the LEDs, the
+target sends a greeting out the serial port.  The greeting consists of
+a CRLF (carriage/linefeed), followed by "hi", followed by CRLF.
+</p>
+<p>
+In normal use, i.e., starting the program with
+</p>
+<p>
+<code>./riscy.tcl -image kernel-lpc2103 ...</code>,
+</p>
+<p>
+you will not see this greeting because <code>riscy.tcl</code> silently eats the
+greeting (since it is waiting for a properly formatted message from
+the target and the greeting is deliberately not so formatted).
+</p>
+<p>
+However, if you are having trouble with the serial communication, you
+can start a serial terminal program such as <code>minicom</code> instead of
+<code>riscy.tcl</code>.   Then, when you boot or reset the target, you should see
+the greeting in the serial terminal.  If you do not see the greeting,
+check your cables and check your settings in <code>minicom</code>.  Are you using
+the correct serial port name?  Have you set the baud rate correctly
+(this should be 38,400 bps unless you have changed it everywhere)?  8
+data bits, no parity, 1 stop bit?  Have you turned off both hardware
+and software flow control?  Until you see the greeting, there is no
+point in wondering about why the Forth itself doesn't work.
+</p>
+<p>
+I have run into the problem after rebooting the host where the host
+programs (either <code>riscy.tcl</code> or <code>lpc21isp</code>) were unable to set the baud
+rate.  With <code>riscy.tcl</code>, the symptom is that, although a message such
+as
+</p>
+<pre class="example">
+  Welcome to Riscy Pygness
+  Loading the dictionary from kernel-lpc2103.dictionary
+</pre>
+
+<p>
+appears as usual, the expected prompt never appears.  That is, this
+is what should appear
+</p>
+<pre class="example">
+  Welcome to Riscy Pygness
+  Loading the dictionary from kernel-lpc2103.dictionary
+  &gt;
+</pre>
+
+<p>
+A cure for this is to bring up <code>minicom</code> and set the baud rate to
+38400 then exit <code>minicom</code>.  I imagine this will last until the host is
+rebooted.  Thus, you probably only need to do this once each time you
+reboot the host.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-11.14" class="outline-3">
+<h3 id="sec-11.14">11.14 Supported Processors </h3>
+<div id="text-11.14">
+
+
+
+</div>
+
+<div id="outline-container-11.14.1" class="outline-4">
+<h4 id="sec-11.14.1">11.14.1 LPCxxxx </h4>
+<div id="text-11.14.1">
+
+
+<p>
+Riscy Pygness should be easy to port to any ARM processor (ARM 7,
+ARM9).  So far, I have run it on the NXP LPC family of ARM
+processors. It currently runs on at least the LPC2106, LPC2103,
+LPC2294, and the LPC2378.  The modifications necessary for other LPC
+ARM7 processors should be minimal.  It has not yet been ported to the
+ARM Cortex.
+</p>
+<p>
+Riscy Pygness currently works on at least the following ARM CPU and
+board variants.
+</p>
+<ul>
+<li>
+Olimex LPC-P2106 board
+
+</li>
+<li>
+Olimex LPC-P2103 board
+
+</li>
+<li>
+Olimex LPC-P2378 board
+
+</li>
+<li>
+Olimex LPC-P2294 board
+
+</li>
+<li>
+New Micros Tini2106 board
+
+</li>
+</ul>
+
+<p>We can expect it to run on the entire LPC family of chips with minor
+adjustments for clock speed, and such, on specific boards.
+</p>
+<p>
+The Appendix includes some information for several variants.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11.14.2" class="outline-4">
+<h4 id="sec-11.14.2">11.14.2 other ARM CPUs </h4>
+<div id="text-11.14.2">
+
+
+<p>
+I have attempted to isolate the CPU-specific and/or development
+board-specific part of the code in separate files.  See
+<code>custom-lpc2106.asm</code>, <code>custom-lpc2103.asm</code>, and <code>custom-lpc23xx.asm</code> in the
+distribution.  The main assembly language file, <code>riscy.asm</code>, contains
+one conditional directive which <b>includes</b> the appropriate CPU-specific
+file based on a symbol defined near the top of <code>riscy.asm</code>.  The
+<code>makefile</code> edits that symbol automatically to match the particular
+processor.
+</p>
+<p>
+The file <code>equates-lpc2xxx.asm</code> holds register definitions that apply to
+all of the NXP LPC2000 family members.  In addition, there are
+board-specific equates files: <code>olimex-lpc2106-equates.asm</code>,
+<code>olimex-lpc2103-equates.asm</code>, and <code>olimex-lpc2378-equates.asm</code>.
+</p>
+<p>
+To port to a different ARM 7 or ARM 9 processor, copy whichever of the
+above files are most similar to your processor, and modify them.  The
+goal, of course, is to isolate the parts that change from the parts
+that do not change, thus not cluttering the main source code with tons
+of conditional directives.
+</p>
+<p>
+The main task will be to adjust for differences in how I/O and
+peripherals are handled, setting the clock speed, noting which pin (if
+any) connects to an LED, etc.
+</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-12" class="outline-2">
+<h2 id="sec-12">12 Contact Information </h2>
+<div id="text-12">
+
+
+<p>
+Email: frank@pygmy.utoh.org
+</p>
+<p>
+Home page: <a href="http://pygmy.utoh.org">http://pygmy.utoh.org</a>
+</p>
+<p>
+Main Riscy Pygness page: <a href="http://pygmy.utoh.org/riscy">http://pygmy.utoh.org/riscy</a>
+</p>
+
+
+
+</div>
+</div>
+<div id="postamble"><p class="author"> Author: Frank Sergeant
+<a href="mailto:frank@pygmy.utoh.org">&lt;frank@pygmy.utoh.org&gt;</a>
+</p>
+<p class="date"> Date: 2010-11-10 Wed</p>
+<p>HTML generated by org-mode 6.21b in emacs 23</p>
+</div></body>
+</html>

@@ -1,0 +1,535 @@
+;; 
+
+;; How to start Emacs without having it read this file
+;;     emacs -q         ;; no startup file
+;;     emacs -Q         ;; no startup file and no site file
+
+(fset 'yes-or-no-p 'y-or-n-p)       ; replace y-e-s by y
+(setq inhibit-startup-message t)    ; no splash screen
+(setq ls-lisp-dirs-first t)         ; display directories first in dired
+(show-paren-mode t)                 ; paren matching
+(setq mouse-1-click-follows-link 'double)  ; ??
+
+;; Uncomment the next 3 lines to get rid of the scroll bar and the
+;;   tool bar and the menu in order to provide more screen real estate
+;;   for real work.
+
+;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+;(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+
+; include home directory in 'load-path 
+(add-to-list 'load-path (expand-file-name "~/"))
+
+(setq transient-mark-mode t)        ; highlight marked regions
+
+;; Allow debugging
+(setq debug-on-error t)
+
+;; But, error messages in byte-compiled format are impossible
+;;  to read, so when getting such an error, immediately load
+;;  the uncompiled version (recursively)
+;   M-x load-library <package>.el
+
+;; Tramp
+;(require 'tramp)
+;(set tramp-default-method "scp")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; fonts
+
+;; Do not set the fonts unless x is running 
+;(if (boundp 'window-system)
+;(if (boundp 'x-display-name)
+(if (eq window-system 'x)
+    (progn
+      ;; following is ok for the 20pt font
+      ;; ** fcs as a test for use on netbook, comment following sexp
+      ;(setq initial-frame-alist '((top . 1) (left . 1) (width . 90) (height . 32)))
+      ;; set font size
+      (set-face-font 'default "-*-fixed-medium-r-normal--20-*")   ;; probably even better
+      ))
+;;;(set-face-font 'default "-*-fixed-medium-r-normal--24-*")
+
+
+;(setq enable-local-variables 'query)
+(setq enable-local-variables t)
+
+
+
+;;; Rebind 'C-x C-b' to 'buffer-menu so we actually move to that window,
+;;;  rather than to 'list-buffers which does not move to it
+(global-set-key "\C-x\C-b" 'buffer-menu)
+
+(setq default-major-mode 'text-mode)
+(setq scroll-step 1)
+
+(setq auto-mode-alist (cons '("\.inc$" . asm-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\.lst$" . asm-mode) auto-mode-alist))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Outline mode
+
+;;; Fixup outline minor mode to use a more reasonable prefix (C-o)
+;;;  and to use foldout.  NOTE, it might be better to install org-mode
+;;;  to its toggling-the-outline-mode keystrokes can be used instead.
+(setq outline-minor-mode-prefix [(control o)])
+(global-set-key [(meta o)] 'open-line)
+(eval-after-load "outline" '(require 'foldout))
+;;; Use the same C-o prefix even if in full outline mode
+(setq outline-mode-prefix [(control o)])
+
+;; Note, org-mode has much better outline handling.  Is there a way to
+;; it as a minor mode so it will provide the better outline key bindings?
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Postscript
+(setq auto-mode-alist (cons '("\.ps$" . ps-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\.psl$" . ps-mode) auto-mode-alist))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Tcl
+;;
+;;;; Here was an example from the web
+;; (add-hook 'tcl-mode-hook
+;;     '(lambda ()
+;;       (local-set-key [return] 'reindent-then-newline-and-indent)
+;;       (setq tab-width 4
+;;        ;; this will make sure spaces are used instead of tabs
+;;        indent-tabs-mode nil)))
+
+;; But, what I want for Tcl mode is for it to use the *standard* key bindings
+;;  that I am used to in Lisp modes.
+;;  original       function             my preferred key
+;; C-c C-f         tcl-load-file          C-c C-l          ; ie load file
+;; C-c TAB         tcl-help-on-word
+;; C-c C-s         switch-to-tcl          C-c C-z          ; start or move to the Tcl buffer
+;; C-c C-t         inferior-tcl           C-c C-z          ; start or move to the Tcl buffer
+;; C-c C-v         tcl-eval-defun         C-x C-e          ; ?? eval-last-sexp ??
+;; C-c C-x         tcl-eval-region        C-c C-r          ; eval highlighted region
+;; C-M-q           tcl-indent-exp
+;; C-M-x           tcl-eval-defun
+
+;; Utoh, C-x C-e is not doing what I want when it is bound to 'tcl-eval-defun
+;;  Instead, I guess my best bet would be to highlight the line the cursor is on
+;;  then 'tcl-eval-region.
+(add-hook 'tcl-mode-hook
+    '(lambda ()
+      (setq tcl-application "tclkit")
+      (local-set-key "\C-c\C-z" 'inferior-tcl)
+      (local-set-key "\C-c\C-l" 'tcl-load-file)
+      (local-set-key "\C-x\C-e" 'tcl-eval-defun)  ;; not quite?
+      (local-set-key "\C-c\C-r" 'tcl-eval-region)
+
+      (setq outline-regexp "proc ")
+      (outline-minor-mode t)
+      (setq comment-start: "#")
+
+       ))
+
+;; Here is how to run etags to generate a TAGS file for Tcl files:
+;;    etags --language=none --regex='/proc[ \t]+\([^ \t]+\)/\1/' *.tcl
+     
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Here is a simple forth blocks mode.
+(setq auto-mode-alist
+      (cons '("\\.fth" . forthblocks-mode) auto-mode-alist))
+(autoload 'forthblocks-mode "~/forthblocks.el" "Forth blocks editing mode." t)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'asm-mode-hook
+  '(lambda ()
+     (setq outline-regexp ";;;+")
+     (outline-minor-mode t)
+     (setq comment-start: "; ")))
+
+; Above makes ;;; a major heading and ;;;; and subheading 
+;; I might try ";;;\\| *;;."  to catch indented double semis as subsections
+;; (setq outline-regexp ";;;\\|;--")
+;; (setq outline-regexp "$^;;;\\|$^;--")
+;; outline-regexp's default value is "[*\f]+"
+
+(global-font-lock-mode t)
+(setq font-lock-maximum-decoration t)
+
+;;; Fix some colors so I can see them
+;(set-face-foreground 'font-lock-string-face "Sienna") ; instead of RosyBrown
+;;;(set-face-foreground font-lock-string-face "Blue3") ; instead of RosyBrown
+
+;; I can't tell what it used to be, but try brown.
+;(set-face-foreground 'font-lock-comment-face "brown")
+
+;;; Python
+(setq auto-mode-alist
+      (cons '("\\.py$" . python-mode) auto-mode-alist))
+(setq interpreter-mode-alist
+      (cons '("python" . python-mode)
+            interpreter-mode-alist))
+(autoload 'python-mode "python-mode" "Python editing mode." t)
+
+;;; Cobol
+(setq auto-mode-alist
+      (cons '("\\.cbl" . cobol-mode) auto-mode-alist))
+(autoload 'cobol-mode "cobol" "Cobol editing mode." t)
+
+;;; Smalltalk
+(setq auto-mode-alist
+      (append  '(("\\.\\(pac\\|st\\|ws\\)" . smalltalk-mode))
+               auto-mode-alist))
+(autoload 'smalltalk-mode
+    "/usr/local/share/emacs/site-lisp/smalltalk-mode.elc" "" t)
+(autoload 'gst-mode
+    "/usr/local/share/emacs/site-lisp/gst-mode.elc" "" t)
+
+; stop the damn blinking
+(blink-cursor-mode nil)
+
+;; see what happens if we set this
+(setq comint-always-scroll t)
+
+;; turn off the bell
+(setq visible-bell t)
+(set-cursor-color "red")  ;; ?? 
+
+;; always auto-fill in text mode
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(setq inhibit-startup-message t)
+(setq-default indent-tabs-mode nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Printing
+;;
+(defun my-print-region (start end)
+  "Pipe the region to the printer via a2ps."
+  ;; --header='a\nb\nc\nd\ne\n'
+  (interactive "r")
+  (shell-command-on-region 
+   start end "a2ps -1 --no-header --borders=no --margin=50"))
+
+(defun my-print-region2 (start end)
+  "Pipe the region to the printer via a2ps."
+  ;; --header='a\nb\nc\nd\ne\n'
+  (interactive "r")
+  (shell-command-on-region 
+   start end "a2ps -1 --no-header --portrait --borders=no --margin=50"))
+
+(defun my-print-asm-region (start end)
+  "Pipe the region to the printer via a2ps.  To specify the printer, add
+   --printer=canon or --printer=lj or whatever your printers are named."
+  ;; --header='a\nb\nc\nd\ne\n'
+  (interactive "r")
+  (shell-command-on-region 
+   start end "a2ps --columns=2 --no-header --landscape --borders=no --margin=50 --margin=50"))
+
+(defun my-print-asm-listing-region (start end)
+  "Pipe the region to the printer via a2ps."
+  (interactive "r")
+  (shell-command-on-region 
+   start end "a2ps --columns=1 --no-header --landscape --borders=no --margin=50 --lines-per-page=60 --chars-per-line=120"))
+
+;; a2ps -1 --no-header --portrait --borders=no --margin=50
+;; a2ps --columns=2 --no-header --landscape --borders=no --margin=50 --pages=1 --output=temp.ps
+;; a2ps --columns=2 --no-header --landscape --borders=no --margin=50  --output=temp.ps
+
+;; ** following works well for an assembly language listing
+;; a2ps --columns=2 --no-header --landscape --borders=no --margin=50  <file.asm>
+
+;; ** following is a good start for my fund accounting report which has 92 columns
+;;a2ps --columns=1 --no-header --landscape -P display --medium=Letter --chars-per-line=95
+
+
+(defun my-enscript-region (start end)
+  "Pipe the region to the printer via enscript."
+  (interactive "r")
+  (shell-command-on-region 
+   start end "enscript"))
+
+(defun my-enscript-letter-region (start end)
+  "Pipe the region to the printer via enscript.
+Be sure to set-fill-column to a good value, e.g. 58
+with e.g. C-u 58 C-x f
+
+For Courier12, and margins of 90:90, set the fill column
+to a maximum of 58.  Copy the following two lines to a letter
+for a test of where line breaks are forced by enscript:
+
+0        1         2         3         4         5         6         7
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+"
+  (interactive "r")
+  (shell-command-on-region 
+   start end "enscript --margins=90:90:120 --no-header --font=Courier12"
+   ;start end "enscript --margins=90:90:120 --no-header --font=Times-Roman12"
+   ))
+
+(defun my-enscript-report-region (start end)
+  "Pipe the region to the printer via enscript.
+This should be suitable for ordinary text and
+accounting reports.
+Copy the following two lines to a letter
+for a test of where line breaks are forced by enscript:
+
+0        1         2         3         4         5         6         7
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+"
+  (interactive "r")
+  (shell-command-on-region 
+   start end "enscript --margins=45:45:90 --no-header --font=Courier10"
+   ))
+
+;; Envelopes
+;; Marking the address then doing  M-| RET
+;;  followed by   cat > tempenv; envelope tempenv | lpr
+;;  will do it.
+;; Define that as a function and set C-c C-e to do it automatically.
+;; Note, on LJ, envelopes go flap down with flap on the left.
+;; This assumes, of course, that you have the envelope program installed.
+(defun envelope-region (start end)
+  "Pipe the region (the address of recipient) to the envelope program
+   and then to the printer.  The envelope goes into the printer flap 
+   down with the flap on the left."
+  (interactive "r")
+  (shell-command-on-region 
+   start end "cat > tempenv; envelope tempenv | lpr"))
+(global-set-key "\C-c\C-e" 'envelope-region)
+
+(defun envelope2-region (start end)
+  "Pipe the region (the address of recipient) to the envelope program
+   and then to the printer.  See if we can specify a different return
+   address file.  This version has my return address without a name"
+  (interactive "r")
+  (shell-command "echo \"[to]\n\" > tempenv ")
+  (shell-command-on-region start end "cat >> tempenv ")
+  (shell-command "echo \"[from]\n\nXXX North Southeast Street\nAnytown, OK  12345\n\" >> tempenv ")
+  (shell-command "envelope tempenv | lpr"))
+
+(defun envelope3-region (start end)
+  "Pipe the region (the address of recipient) to the envelope program
+   and then to the printer.  See if we can specify a different return
+   address file.  Yes, this version has NO return address."
+  (interactive "r")
+  (shell-command "echo \"[to]\n\" > tempenv ")
+  (shell-command-on-region start end "cat >> tempenv ")
+  (shell-command "echo \"[from]\n\n\n\" >> tempenv ")
+  (shell-command "envelope tempenv | lpr"))
+
+
+;; TeX and LaTeX
+
+;; *Command used by C-c C-v to display a `.dvi' file.
+;; If this string contains an asterisk (`*'), that is replaced by the file name;
+;; otherwise, the file name, preceded by blank, is added at the end.
+;; This can be set conditionally so that the previewer used is suitable for the
+;; window system being used.  For example,
+;;     (setq tex-dvi-view-command
+;;           (if (eq window-system 'x) "xdvi" "dvi2tty * | cat -s"))
+;; would tell C-c C-v to use xdvi under X windows and to use dvi2tty
+;; otherwise.
+;(setq tex-dvi-view-command
+;      (if (eq window-system 'x) "xdvi" "dvi2tty * | cat -s"))
+(setq tex-dvi-view-command "xdvi")
+;(setq tex-dvi-view-command "dvi2tty * | cat -s")
+
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+
+;; Gnuplot
+(autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
+(autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot mode" t)
+(setq auto-mode-alist
+      (append  '(("\\.gp$" . gnuplot-mode))
+               auto-mode-alist))
+(global-set-key [(f9)] 'gnuplot-make-buffer)
+;(add-to-list 'Info-directory-list "/usr/share/info/gnuplot.info-1.gz")
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Custom functions (other than printing)
+;;
+
+;; Convert from DOS crlf to Unix lf or vice versa (from Earl Stutes in
+;; Linux Gazette).  I changed dos-unix slightly.
+(defun dos-unix ()
+  (interactive)
+  (goto-char (point-min))
+  (while (search-forward "\r\n" nil t)
+    (replace-match "\n")))
+(defun unix-dos ()
+  (interactive)
+  (goto-char (point-min))
+  (while (search-forward "\n" nil t)
+    (replace-match "\r\n")))
+
+;; example of changing directories to those most frequently used
+(defun arm ()
+  (interactive)
+  (cd "/home/xxx/arm/"))
+(defun cy ()
+  (interactive)
+  (cd "/home/xxx/mon/"))
+
+;; convert Fahrenheit to Celsius and vice versa
+(defun f2c (ndeg)
+  (interactive "Ndegrees Fahrenheit: ")
+  (* 5 (/ (- ndeg 32) 9)))
+;  (f2c 212.0)
+;  (f2c 32.0)
+(defun c2f (deg)
+  (interactive "Ndegrees Celsius: ")
+  (+ (/ (* deg 9) 5) 32))
+; (c2f 100)
+; (c2f  0)
+; (c2f  25)
+; (c2f  85)
+  
+;; ****************  convert radians to degrees and vice versa ********
+;; there are 2pi radians in 360 degrees
+;; tests
+;;   sb 360     (r2d (* 2.0 pi))
+;;   sb 180     (r2d (* 1.0 pi))
+;;   sb  90     (r2d (* 0.5 pi))
+;;   sb   2pi   (d2r 360)
+;;   sb    pi   (d2r 180)
+;;   sb equal
+;;      (r2d (d2r 360))
+(defun r2d (nrad)
+  (interactive "Nradians: ")
+  (* (/ nrad pi) 180))
+(defun d2r (ndeg)
+  (interactive "Ndegrees: ")
+  (* (/ ndeg 180) pi))
+
+;; grams to troy ounces and vice versa
+;; there are 31.1034768 grams per troy ounce
+(defun g2o (grams)
+  (interactive "Ngrams: ")
+  (/ grams 31.1034768))
+(defun o2g (ounces)
+  (interactive "Ndegrees: ")
+  (* 31.1034768 ounces))
+
+(defun mm (inches)
+  "Convert inches to millimeters"
+  (* 25.4 inches))
+
+(defun inches (mm)
+  "Convert millimeters to inches"
+  (/ mm 25.4))
+
+(defun hex (num)
+  "Print NUM in hexadecimal"
+  (format "0x%X" num))
+
+;; (hex 65)
+
+;; (inches 2.54)
+;; (mm 1)
+
+;; ;;;;;;;;;;;;;;;; Open web browser on a highlighted url ;;;;;;;;;;;;;;;;;;
+
+(defun ff (start end)
+  "Run firefox asynchronously on the highlighted url in region in new tab."
+  (interactive "r")
+  (shell-command 
+   (concat "firefox -remote \"openurl(" 
+           (buffer-substring-no-properties (point) (mark))
+           ",new-tab)\" > /dev/null  &")))
+
+(defun sm (start end)
+  "Run Seamonkey asynchronously on the highlighted url in region in new tab."
+  (interactive "r")
+  (shell-command 
+   (concat "seamonkey -remote \"openurl(" 
+           (buffer-substring-no-properties (point) (mark))
+           ",new-tab)\" > /dev/null  &")))
+
+(defun konq (start end)
+  "Run Konqueror asynchronously on the highlighted url in region."
+  (interactive "r")
+  (shell-command 
+   (concat "konqueror --profile webbrowsing " 
+           (buffer-substring-no-properties (point) (mark))
+           " &")))
+
+;; Some regions to try it on
+;;  http://google.com
+;;  http://amazon.com
+
+;; end of my custom functions
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Common Lisp 
+;;
+
+(setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/")
+
+;(setq inferior-lisp-program "gclcvs --ansi")
+
+; for use with slime, the '-K full' is recommend, and '-K full' works fine without slime also
+(setq inferior-lisp-program "clisp -K full")
+;(setq inferior-lisp-program "cmucl")
+
+;(setq inferior-lisp-program "sbcl --noinform")  
+;(setq inferior-lisp-program "sbcl")
+
+(add-hook 'lisp-mode-hook 'outline-minor-mode)
+
+; ** what is this pesky 'lee-hook that keeps cropping up?  Can we remove it? **
+(remove-hook 'lisp-mode-hook 'lee-hook)
+
+;; Common Lisp indentation.
+(autoload 'common-lisp-indent-function "cl-indent")
+(setq lisp-indent-function 'common-lisp-indent-function)
+
+;; ****************** End of Common Lisp *********************************
+ 
+;; ****************** Scheme *************
+;(require 'quack)
+
+
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(ecb-options-version "2.32")
+ '(gdb-many-windows t)
+ '(gdb-show-main t)
+ '(gnus-activate-level 5)
+ '(ps-run-x (quote ("gs" "-r72" "-sPAPERSIZE=letter" "-sDEVICE=x11mono")))
+ '(py-python-command "python2.4")
+ '(quack-programs (quote ("mred --nogui" "bigloo" "csi" "csi -hygienic" "gosh" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "mred" "mred -z" "mzscheme" "mzscheme -M errortrace" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
+ '(safe-local-variable-values (quote ((unibyte . t))))
+ '(slime-edit-definition-fallback-function (quote slime-edit-definition-with-etags))
+ '(tex-dvi-print-command "dvips -f * | lpr")
+ '(utf-translate-cjk-mode nil))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
+
+(put 'narrow-to-region 'disabled nil)
+
+(put 'narrow-to-page 'disabled nil)
+
+
+;; ****************** Shell Buffers *************
+;; I like to have two shell buffers opened automatically, and with
+;; shorter names.
+(shell)
+(rename-buffer "s2")
+(shell)
+(rename-buffer "s")

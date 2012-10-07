@@ -1,0 +1,646 @@
+# This file, kernel.dictionary, was generated automatically
+# on Mon Aug 30 12:29:42 CDT 2010, by the writeImageDictionary
+# procedure in riscy.tcl when the image was saved with the
+# Forth command
+#       SAVE-IMAGE <imagename> <bootword>
+
+# It will be loaded when Riscy Pygness is started up in interactive
+# mode with a command such as
+#    tclkit riscy.tcl -image <imagename>
+
+# It maps the Forth word names to addresses in the target flash memory and
+# sets several other variables.
+
+# Statistics:
+#      120 names in ::forthnamelist
+#      0 names in ::ramLabels
+#      155 names in ::flashLabels
+#      155 names in ::labels
+
+
+array unset ::labels
+
+array set ::labels {
+        EXECUTE  {        EXECUTE  0x00000168  1  0     0}
+           EXIT  {           EXIT  0x00000200  1  0     1}
+            NOP  {            NOP  0x00000208  1  0     2}
+            DUP  {            DUP  0x0000020c  1  0     3}
+           SWAP  {           SWAP  0x00000214  1  0     4}
+           DROP  {           DROP  0x0000021c  1  0     5}
+          2DROP  {          2DROP  0x00000224  1  0     6}
+          3DROP  {          3DROP  0x00000230  1  0     7}
+          4DROP  {          4DROP  0x0000023c  1  0     8}
+            NIP  {            NIP  0x00000248  1  0     9}
+           PUSH  {           PUSH  0x00000250  1  0    10}
+          2PUSH  {          2PUSH  0x0000025c  1  0    11}
+            POP  {            POP  0x00000270  1  0    12}
+           2POP  {           2POP  0x0000027c  1  0    13}
+             R@  {             R@  0x00000290  1  0    14}
+            2R@  {            2R@  0x0000029c  1  0    15}
+              I  {              I  0x000002b0  1  0    16}
+            ROT  {            ROT  0x000002bc  1  0    17}
+            SP@  {            SP@  0x000002cc  1  0    18}
+            RP@  {            RP@  0x000002dc  1  0    19}
+           OVER  {           OVER  0x000002e8  1  0    20}
+          2OVER  {          2OVER  0x000002f4  1  0    21}
+           -ROT  {           -ROT  0x00000308  1  0    22}
+          2SWAP  {          2SWAP  0x0000031c  1  0    23}
+           2DUP  {           2DUP  0x00000330  1  0    24}
+           3DUP  {           3DUP  0x00000340  1  0    25}
+           4DUP  {           4DUP  0x00000358  1  0    26}
+           ?DUP  {           ?DUP  0x00000378  1  0    27}
+             C@  {             C@  0x00000384  1  0    28}
+              @  {              @  0x0000038c  1  0    29}
+             2@  {             2@  0x00000394  1  0    30}
+             C!  {             C!  0x000003a8  1  0    31}
+              !  {              !  0x000003b8  1  0    32}
+             2!  {             2!  0x000003c8  1  0    33}
+             W@  {             W@  0x000003e0  1  0    34}
+             W!  {             W!  0x000003e8  1  0    35}
+        (SEROUT  {        (SEROUT  0x00000498  1  0    36}
+       (SEROUT1  {       (SEROUT1  0x000004a8  1  0    37}
+        (SERIN?  {        (SERIN?  0x000004b8  1  0    38}
+         (SERIN  {         (SERIN  0x000004d0  1  0    39}
+             -1  {             -1  0x000004e0  1  0    40}
+             -2  {             -2  0x000004ec  1  0    41}
+       TICKS/MS  {       TICKS/MS  0x000004f8  1  0    42}
+           PCLK  {           PCLK  0x00000504  1  0    43}
+           CCLK  {           CCLK  0x00000510  1  0    44}
+    BUS-DIVISOR  {    BUS-DIVISOR  0x0000051c  1  0    45}
+     SPIDIVISOR  {     SPIDIVISOR  0x00000528  1  0    46}
+         SPICLK  {         SPICLK  0x00000534  1  0    47}
+             M+  {             M+  0x0000054c  1  0    48}
+              +  {              +  0x00000564  1  0    49}
+             D+  {             D+  0x00000570  1  0    50}
+              -  {              -  0x00000584  1  0    51}
+             2*  {             2*  0x00000590  1  0    52}
+             2/  {             2/  0x00000598  1  0    53}
+            U2/  {            U2/  0x000005a0  1  0    54}
+           256/  {           256/  0x000005a8  1  0    55}
+          SPLIT  {          SPLIT  0x000005b0  1  0    56}
+             +!  {             +!  0x000005c8  1  0    57}
+         +UNDER  {         +UNDER  0x000005e0  1  0    58}
+         NEGATE  {         NEGATE  0x000005f4  1  0    59}
+             1+  {             1+  0x000005fc  1  0    60}
+             2+  {             2+  0x00000604  1  0    61}
+             1-  {             1-  0x0000060c  1  0    62}
+             2-  {             2-  0x00000614  1  0    63}
+        DNEGATE  {        DNEGATE  0x0000061c  1  0    64}
+           64K*  {           64K*  0x00000630  1  0    65}
+           64K/  {           64K/  0x00000638  1  0    66}
+              *  {              *  0x00000644  1  0    67}
+            UM*  {            UM*  0x00000654  1  0    68}
+             M*  {             M*  0x00000668  1  0    69}
+          U/MOD  {          U/MOD  0x0000067c  1  0    70}
+            AND  {            AND  0x000006b4  1  0    71}
+             OR  {             OR  0x000006c0  1  0    72}
+            XOR  {            XOR  0x000006cc  1  0    73}
+              =  {              =  0x000006d8  1  0    74}
+            NOT  {            NOT  0x000006e0  1  0    75}
+             0=  {             0=  0x000006e0  1  0    76}
+          ROR24  {          ROR24  0x000006ec  1  0    77}
+              >  {              >  0x000006f4  1  0    78}
+              <  {              <  0x000006f8  1  0    79}
+             0>  {             0>  0x0000070c  1  0    80}
+             0<  {             0<  0x00000710  1  0    81}
+             U>  {             U>  0x00000718  1  0    82}
+             U<  {             U<  0x0000071c  1  0    83}
+            for  {            for  0x0000072c  1  0    84}
+           next  {           next  0x00000744  1  0    85}
+        0branch  {        0branch  0x00000758  1  0    86}
+         branch  {         branch  0x0000076c  1  0    87}
+          lit16  {          lit16  0x00000778  1  0    88}
+          lit32  {          lit32  0x00000784  1  0    89}
+          quote  {          quote  0x000007ac  1  0    90}
+     abortquote  {     abortquote  0x000007b4  1  0    91}
+       TERMINAL  {       TERMINAL  0x000007d8  1  0    92}
+     FOREGROUND  {     FOREGROUND  0x000007d8  1  0    93}
+          TASK1  {          TASK1  0x000007e4  1  0    94}
+          TASK2  {          TASK2  0x000007f0  1  0    95}
+            SP0  {            SP0  0x000007fc  1  0    96}
+            RP0  {            RP0  0x0000080c  1  0    97}
+           LINK  {           LINK  0x0000081c  1  0    98}
+          PAUSE  {          PAUSE  0x00000828  1  0    99}
+           COLD  {           COLD  0x00000854  1  0   100}
+          RESET  {          RESET  0x00000854  1  0   101}
+              H  {              H  0x00000860  1  0   102}
+         'ABORT  {         'ABORT  0x0000086c  1  0   103}
+            RP!  {            RP!  0x00000878  1  0   104}
+            SP!  {            SP!  0x00000880  1  0   105}
+ queryinterpret  { queryinterpret  0x00000888  1  0   106}
+            ?ok  {            ?ok  0x00000928  1  0   107}
+         number  {         number  0x000009bc  1  0   108}
+              .  {              .  0x000009c4  1  0   109}
+             .R  {             .R  0x000009d4  1  0   110}
+             U.  {             U.  0x000009ec  1  0   111}
+            U.R  {            U.R  0x000009fc  1  0   112}
+          COUNT  {          COUNT  0x00000a14  1  0   113}
+           TYPE  {           TYPE  0x00000a24  1  0   114}
+           EMIT  {           EMIT  0x00000a34  1  0   115}
+        DECIMAL  {        DECIMAL  0x00000a44  1  0   116}
+            HEX  {            HEX  0x00000a50  1  0   117}
+          ledOn  {          ledOn  0x00000a5c  1  0   118}
+         ledOff  {         ledOff  0x00000a64  1  0   119}
+           QUIT  {           QUIT        2700  0  0   120}
+         (ABORT  {         (ABORT        2716  0  0   121}
+           INIT  {           INIT        2726  0  0   122}
+             .S  {             .S        2736  0  0   123}
+             CR  {             CR        2756  0  0   124}
+             .H  {             .H        2768  0  0   125}
+              ?  {              ?        2774  0  0   126}
+             BL  {             BL        2780  0  0   127}
+          SPACE  {          SPACE        2786  0  0   128}
+         SPACES  {         SPACES        2790  0  0   129}
+          BYTES  {          BYTES        2802  0  0   130}
+            0<>  {            0<>        2814  0  0   131}
+        BETWEEN  {        BETWEEN        2818  0  0   132}
+         WITHIN  {         WITHIN        2820  0  0   133}
+            ABS  {            ABS        2832  0  0   134}
+            MAX  {            MAX        2844  0  0   135}
+            MIN  {            MIN        2856  0  0   136}
+            MOD  {            MOD        2868  0  0   137}
+             U/  {             U/        2872  0  0   138}
+              /  {              /        2876  0  0   139}
+         CMOVE>  {         CMOVE>        2912  0  0   140}
+          CMOVE  {          CMOVE        2948  0  0   141}
+           FILL  {           FILL        2974  0  0   142}
+          BLANK  {          BLANK        3002  0  0   143}
+          ERASE  {          ERASE        3006  0  0   144}
+            T1@  {            T1@        3012  0  0   145}
+             MS  {             MS        3022  0  0   146}
+           DUMP  {           DUMP        3046  0  0   147}
+             DU  {             DU        3172  0  0   148}
+          LOCAL  {          LOCAL        3184  0  0   149}
+         AWAKE?  {         AWAKE?        3190  0  0   150}
+          SLEEP  {          SLEEP        3238  0  0   151}
+           STOP  {           STOP        3272  0  0   152}
+           WAKE  {           WAKE        3276  0  0   153}
+          TASK!  {          TASK!        3306  0  0   154}
+}
+
+array unset ::constants
+
+array set ::constants {
+                   U0BASE  0xe000c000
+                    U0FDR  0xe000c028
+                  IRCTRIM  0xe01fc1a4
+               SPIDIVISOR  0x00000080
+                  FIO3SET  0x3fffc078
+               MCIRespCmd  0xe008c010
+                  FIO4PIN  0x3fffc094
+                     UIIR  0x00000008
+                  FIO4CLR  0x3fffc09c
+      PCLK_TIMER0_DIVISOR  0x00000004
+                    T2EMR  0xe007003c
+                 FIO3MASK  0x3fffc070
+                    T2CCR  0xe0070028
+                     PCON  0xe01fc0c0
+                     T2PC  0xe0070010
+                    T3MCR  0xe0074014
+                  EXTWAKE  0xe01fc144
+                  udotMsg  0x00000055
+                 udotrMsg  0x00000052
+               decimalMsg  0x00000064
+               CPUDIVISOR  0x00000001
+                    U0IIR  0xe000c008
+                  PWM0CON  0xe0004074
+                  PLLFEED  0xe01fc08c
+                  MSTICKS  0x00000e66
+                   SPICLK  0x00007080
+           PLL_MULTIPLIER  0x00000001
+                     T2PR  0xe007000c
+                    PCONP  0xe01fc0c4
+                 MCIClear  0xe008c038
+                  FIO2SET  0x3fffc058
+                MCIStatus  0xe008c034
+               TIMER0FREQ  0x00384000
+                     BIT0  0x00000001
+                     BIT1  0x00000002
+                  FIO3PIN  0x3fffc074
+                     BIT2  0x00000004
+                   PLLCLK  0x00e10000
+                     BIT3  0x00000008
+                  FIO3CLR  0x3fffc07c
+                 FIO0MASK  0x3fffc010
+                     BIT4  0x00000010
+                     BIT5  0x00000020
+                     BIT6  0x00000040
+                  emitMsg  0x00000045
+                     BIT7  0x00000080
+                     BIT8  0x00000100
+                     BIT9  0x00000200
+             MCIResponse0  0xe008c014
+              MCIDataCtrl  0xe008c02c
+               MCIDataCnt  0xe008c030
+                    T1EMR  0xe000803c
+             MCIResponse1  0xe008c018
+                     T3IR  0xe0074000
+             MCIResponse2  0xe008c01c
+                  RAMBASE  0x40000000
+             MCIResponse3  0xe008c020
+                    U1ACR  0xe0010020
+                     T2TC  0xe0070008
+                    T1CCR  0xe0008028
+                    T2MCR  0xe0070014
+                  FIO4DIR  0x3fffc080
+                   U2BASE  0xe0078000
+                  INTWAKE  0xe01fc144
+                   EXTINT  0xe01fc140
+           LPC2294PINSEL2  0xe002c014
+                 PCLKSEL0  0xe01fc1a8
+                     T0IR  0xe0004000
+                 PCLKSEL1  0xe01fc1ac
+                    U1LSR  0xe0010014
+                     UACR  0x00000020
+                    T3TCR  0xe0074004
+                   PLLCON  0xe01fc080
+                    okMsg  0x0000006f
+                   T1CTCR  0xe0008070
+                    U1TER  0xe0010030
+                  FIO1SET  0x3fffc038
+                     ULSR  0x00000014
+                  FIO2PIN  0x3fffc054
+                   U1DATA  0xe0010000
+                  FIO2CLR  0x3fffc05c
+                 MCIClock  0xe008c004
+                    T0EMR  0xe000403c
+                     UTER  0x00000030
+                    AD0CR  0xe0034000
+                    U0ACR  0xe000c020
+                    T0CCR  0xe0004028
+                    T1MCR  0xe0008014
+                  FIO3DIR  0x3fffc060
+                     T3PC  0xe0074010
+                   IO1SET  0xe0028014
+  TIMER0_PRESCALE_DIVISOR  0x00000001
+                    U0LSR  0xe000c014
+               MCIFifoCnt  0xe008c048
+                   VPBDIV  0xe01fc100
+                 FIO2MASK  0x3fffc050
+                  AD0ITEN  0xe003400c
+                    T2TCR  0xe0070004
+                     T0PC  0xe0004010
+                    U0TER  0xe000c030
+                     T3PR  0xe007400c
+                  FIO0SET  0x3fffc018
+                    U1DLL  0xe0010000
+                    U1DLM  0xe0010004
+                USBCLKCFG  0xe01fc108
+                  FIO1PIN  0x3fffc034
+                    T3MR0  0xe0074018
+                    T3MR1  0xe007401c
+                numberMsg  0x0000006e
+                  FIO1CLR  0x3fffc03c
+                    T3MR2  0xe0074020
+                    T3MR3  0xe0074024
+                     T0PR  0xe000400c
+                PCLKVALUE  0x00000000
+                  DIVISOR  0x00000006
+                     UDLL  0x00000000
+                     UDLM  0x00000004
+                   AD0GDR  0xe0034004
+                 PINMODE0  0xe002c040
+              MCIArgument  0xe008c008
+                 PINMODE1  0xe002c044
+                 PINMODE2  0xe002c048
+                     T3TC  0xe0074008
+                    T0MCR  0xe0004014
+                  FIO2DIR  0x3fffc040
+                 PINMODE3  0xe002c04c
+                 BAUDRATE  0x00009600
+                 LED_MASK  0x00000080
+                 PINMODE4  0xe002c050
+                 PINMODE5  0xe002c054
+                 PINMODE6  0xe002c058
+                 PINMODE7  0xe002c05c
+                   T3CTCR  0xe0074070
+                 PINMODE8  0xe002c060
+                   IO0SET  0xe0028004
+                 PINMODE9  0xe002c064
+                   APBDIV  0xe01fc100
+                   IO1PIN  0xe0028010
+                     T1IR  0xe0008000
+                   IO1CLR  0xe002801c
+                  PINSEL0  0xe002c000
+                     T0TC  0xe0004008
+                  PINSEL1  0xe002c004
+                  PINSEL2  0xe002c008
+                  CCLKCFG  0xe01fc104
+                  PINSEL3  0xe002c00c
+                    T1TCR  0xe0008004
+                  PINSEL4  0xe002c010
+                  PINSEL5  0xe002c014
+                  PINSEL6  0xe002c018
+                   U1BASE  0xe0010000
+                    U0DLL  0xe000c000
+                  PINSEL7  0xe002c01c
+                    U0DLM  0xe000c004
+                  PINSEL8  0xe002c020
+                  PINSEL9  0xe002c024
+                  FIO0PIN  0x3fffc014
+                    T2MR0  0xe0070018
+                 MCIMask0  0xe008c03c
+                    T2MR1  0xe007001c
+                 MCIMask1  0xe008c040
+                  FIO0CLR  0x3fffc01c
+                    T2MR2  0xe0070020
+                  lpc2106  0x00000001
+                    T2MR3  0xe0070024
+                CLKSRCSEL  0xe01fc10c
+                  PWM3CON  0xe0074074
+                   T0CTCR  0xe0004070
+                 PLLCLKIN  0x00e10000
+              PCLKDIVISOR  0x00000004
+                   hexMsg  0x00000068
+                 FIO4MASK  0x3fffc090
+                  FIO1DIR  0x3fffc020
+                 MCIPower  0xe008c000
+                   U0DATA  0xe000c000
+                    U1LCR  0xe001000c
+               MCICommand  0xe008c00c
+            MCIDataLength  0xe008c028
+                   IO0PIN  0xe0028000
+                   IO0CLR  0xe002800c
+                    T0TCR  0xe0004004
+                     ULCR  0x0000000c
+                     T1PC  0xe0008010
+                    T1MR0  0xe0008018
+                    T1MR1  0xe000801c
+                   ackMsg  0x0000006b
+                    T1MR2  0xe0008020
+                  EXTMODE  0xe01fc148
+                    T1MR3  0xe0008024
+                  dotrMsg  0x00000072
+                   IO1DIR  0xe0028018
+                    U1FCR  0xe0010008
+                  AD0STAT  0xe0034030
+                 FIO1MASK  0x3fffc030
+                  PLLSTAT  0xe01fc088
+                  MCIFIFO  0xe008c080
+                  PWM2CON  0xe0070074
+                    U1IER  0xe0010004
+                     T1PR  0xe000800c
+                 EXTPOLAR  0xe01fc14c
+                    U1FDR  0xe0010028
+                  FIO0DIR  0x3fffc000
+                  FIO4SET  0x3fffc098
+                    U0LCR  0xe000c00c
+                    UDATA  0x00000000
+                    BIT10  0x00000400
+                     UFCR  0x00000008
+                    BIT11  0x00000800
+                    BIT12  0x00001000
+                    BIT13  0x00002000
+                   U3BASE  0xe007c000
+                    BIT14  0x00004000
+                    BIT15  0x00008000
+                     UIER  0x00000004
+                    BIT16  0x00010000
+                    BIT17  0x00020000
+                    BIT18  0x00040000
+                    BIT20  0x00100000
+                    BIT19  0x00080000
+                     T2IR  0xe0070000
+                     UFDR  0x00000028
+                    BIT21  0x00200000
+                    BIT22  0x00400000
+                    T3EMR  0xe007403c
+                    BIT23  0x00800000
+                     T1TC  0xe0008008
+                    BIT24  0x01000000
+                    BIT25  0x02000000
+                    BIT26  0x04000000
+                    T3CCR  0xe0074028
+                    BIT27  0x08000000
+                  typeMsg  0x00000054
+                    BIT28  0x10000000
+                      SCS  0xe01fc1a0
+                    BIT30  0x40000000
+                    BIT29  0x20000000
+                   T2CTCR  0xe0070070
+                    BIT31  0x80000000
+                   AD0DR0  0xe0034010
+                    T0MR0  0xe0004018
+                   AD0DR1  0xe0034014
+                    T0MR1  0xe000401c
+             MCIDataTimer  0xe008c024
+                     CCLK  0x00e10000
+                   AD0DR2  0xe0034018
+                    T0MR2  0xe0004020
+                stringMsg  0x00000073
+                   dotMsg  0x0000002e
+                   AD0DR3  0xe003401c
+                    T0MR3  0xe0004024
+                   AD0DR4  0xe0034020
+                   IO0DIR  0xe0028008
+                   AD0DR5  0xe0034024
+                   PLLCFG  0xe01fc084
+                    U0FCR  0xe000c008
+                 DIVISOR1  0x00000018
+                   AD0DR6  0xe0034028
+                     PCLK  0x00384000
+                   AD0DR7  0xe003402c
+                    U1IIR  0xe0010008
+                  PWM1CON  0xe0008074
+                    U0IER  0xe000c004
+}
+
+array unset ::label2address
+
+array set ::label2address {
+                   ssloop  0x00000978
+                checkForC  0x000008a0
+          peripheralClock  0x00000504
+             zeroLessThan  0x00000710
+          sixtyFourKTimes  0x00000630
+                 pfreeram  0x0000002c
+                      SP0  0x000007fc
+                    parms  0x00000024
+                    task1  0x40000230
+                     rstk  0x400001a8
+                   _start  0x00000020
+                 twoSlash  0x00000598
+                     slow  0x00000428
+                    task2  0x40000358
+                      NOP  0x00000208
+                checkForI  0x000008b0
+                  DECIMAL  0x00000a44
+            processPacket  0x000008ec
+                   Mtimes  0x00000668
+                     mstk  0x40000578
+                    dstk1  0x40000350
+                UslashMOD  0x0000067c
+                      rdr  0x00000464
+                    dstk2  0x40000478
+                     dotR  0x000009d4
+            checkCheckSum  0x000008dc
+                      NOT  0x000006e0
+             parenSEROUT1  0x000004a8
+                   Wfetch  0x000003e0
+                  runboot  0x00000840
+                   nxtTab  0x00000184
+                        I  0x000002b0
+                abortSlot  0x40000004
+                  U2slash  0x000005a0
+               busDivisor  0x0000051c
+         twofiftysixslash  0x000005a8
+               foreground  0x40000108
+                     Udot  0x000009ec
+                     boot  0x0000083c
+                  UMtimes  0x00000654
+                  ptokens  0x00000024
+                       tx  0x00000440
+                      HEX  0x00000a50
+          zeroGreaterThan  0x0000070c
+                  twoSWAP  0x0000031c
+                  SPfetch  0x000002cc
+                      ROT  0x000002bc
+                threeDROP  0x00000230
+                  RTOKENS  0x40000008
+            collectPacket  0x000008b8
+                     LINK  0x0000081c
+                   branch  0x0000076c
+                    delay  0x000003f8
+                      NIP  0x00000248
+                   ledOff  0x00000a64
+                    lit16  0x00000778
+                 spiClock  0x00000534
+                    COUNT  0x00000a14
+                      DUP  0x0000020c
+                 fourDROP  0x0000023c
+                      bg1  0x000007e4
+                 lessThan  0x000006f8
+                ledOffSub  0x000000c8
+                numbersub  0x00000990
+                      qOK  0x00000928
+                    RESET  0x00000854
+                      bg2  0x000007f0
+                      AND  0x000006b4
+          sixtyFourKSlash  0x00000638
+                   twoDUP  0x00000330
+          sendCommandCode  0x00000940
+                 ledOnSub  0x000000b8
+                   Cfetch  0x00000384
+                  fourDUP  0x00000358
+                    rstk1  0x400002d0
+                    quote  0x000007ac
+                    rstk2  0x400003f8
+                zeroEqual  0x000006e0
+              parenSEROUT  0x00000498
+                   delayQ  0x00000408
+                   number  0x000009bc
+                       OR  0x000006c0
+                plusStore  0x000005c8
+                    Mplus  0x0000054c
+                 minusROT  0x00000308
+                 processC  0x000008fc
+                    fetch  0x0000038c
+                     qDUP  0x00000378
+                 pin_init  0x0000004c
+           queryinterpret  0x00000888
+                  EXECUTE  0x00000168
+                 TERMINAL  0x000007d8
+                   NEGATE  0x000005f4
+                   Wstore  0x000003e8
+                 twoFetch  0x00000394
+                  RPfetch  0x000002dc
+              greaterThan  0x000006f4
+                      tx1  0x00000458
+           getPacketStart  0x00000898
+                    lit32  0x00000784
+                  twoPlus  0x00000604
+                 prtokens  0x00000028
+                     next  0x00000744
+                      for  0x0000072c
+                     tdre  0x00000444
+                    greet  0x0000014c
+                 processI  0x00000910
+              collectData  0x000008c8
+                  SPstore  0x00000880
+                  DNEGATE  0x0000061c
+                    ledOn  0x00000a5c
+                plusUNDER  0x000005e0
+               spiDivisor  0x00000528
+                dstklimit  0x400001a8
+                     fast  0x00000410
+                     dstk  0x40000228
+                UlessThan  0x0000071c
+               parenSERIN  0x000004d0
+                      POP  0x00000270
+                        h  0x40000000
+                    equal  0x000006d8
+                   Cstore  0x000003a8
+                     PUSH  0x00000250
+                   twoPOP  0x0000027c
+          endOfDictionary  0x00000a88
+             UgreaterThan  0x00000718
+                    minus  0x00000584
+                     plus  0x00000564
+                 cpuClock  0x00000510
+                     OVER  0x000002e8
+                    store  0x000003b8
+                     DROP  0x0000021c
+                  vectors  0x00000000
+                mstklimit  0x40000478
+                 twoMinus  0x00000614
+                  onePlus  0x000005fc
+              prim_cutoff  0x00000a6c
+                twoRfetch  0x0000029c
+                  RPstore  0x00000878
+                 twoStore  0x000003c8
+                     crlf  0x00000480
+                    Dplus  0x00000570
+              parenSERINQ  0x000004b8
+                    blink  0x00000130
+               sendString  0x00000958
+                    ROR24  0x000006ec
+                      XOR  0x000006cc
+                 threeDUP  0x00000340
+                  freeRAM  0x40000578
+                     TYPE  0x00000a24
+                      RP0  0x0000080c
+                    times  0x00000644
+                rstklimit  0x40000128
+                tickAbort  0x0000086c
+                       dp  0x00000860
+                    SPLIT  0x000005b0
+                 twoTimes  0x00000590
+                     init  0x000000d8
+               ticksPerMS  0x000004f8
+                   quote1  0x00000790
+                   ssexit  0x00000988
+                   delay1  0x000003fc
+              setup_ports  0x00000040
+                     COLD  0x00000854
+                       rx  0x00000460
+                initTasks  0x000000f0
+                     EXIT  0x00000200
+                  twoPUSH  0x0000025c
+                     SWAP  0x00000214
+               rstklimit1  0x40000250
+                   Rfetch  0x00000290
+               rstklimit2  0x40000378
+                   minus1  0x000004e0
+               dstklimit1  0x400002d0
+                    UdotR  0x000009fc
+                    PAUSE  0x00000828
+               abortquote  0x000007b4
+               zeroBranch  0x00000758
+                 oneMinus  0x0000060c
+                   minus2  0x000004ec
+                  twoOVER  0x000002f4
+               dstklimit2  0x400003f8
+                     EMIT  0x00000a34
+                      dot  0x000009c4
+              setup_uarts  0x0000005c
+             setup_clocks  0x00000030
+                  nxtexec  0x00000188
+                  twoDROP  0x00000224
+}
+set ::ramTokenTableBase 0x40000008
+set ::H  0x40000578
+set ::HH 0x40000578
+set ::ram 0x40000578
+set ::chip lpc2106
+
+# end of kernel.dictionary
